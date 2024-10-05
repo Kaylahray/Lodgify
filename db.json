@@ -1,0 +1,304 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "item": {
+        "name": "Bath Towels",
+        "image_url": "link_to_image"
+      },
+      "category": "Linen",
+      "availability": "Available",
+      "quantity_in_stock": 120,
+      "quantity_in_reorder": 50,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 2,
+      "item": {
+        "name": "Shampoo Bottles",
+        "image_url": "link_to_image"
+      },
+      "category": "Toiletries",
+      "availability": "Low",
+      "quantity_in_stock": 20,
+      "quantity_in_reorder": 100,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 3,
+      "item": {
+        "name": "Coffee Pods",
+        "image_url": "link_to_image"
+      },
+      "category": "Refreshments",
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
+      "quantity_in_reorder": 200,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 4,
+      "item": {
+        "name": "Room Key Cards",
+        "image_url": "link_to_image"
+      },
+      "category": "Electronics",
+      "availability": "Available",
+      "quantity_in_stock": 500,
+      "quantity_in_reorder": 100,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 5,
+      "item": {
+        "name": "Cleaning Supplies",
+        "image_url": "link_to_image"
+      },
+      "category": "Housekeeping",
+      "availability": "Available",
+      "quantity_in_stock": 300,
+      "quantity_in_reorder": 50,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 6,
+      "item": {
+        "name": "Mini Bar Snacks",
+        "image_url": "link_to_image"
+      },
+      "category": "Refreshments",
+      "availability": "Low",
+      "quantity_in_stock": 15,
+      "quantity_in_reorder": 30,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 7,
+      "item": {
+        "name": "Bed Linens",
+        "image_url": "link_to_image"
+      },
+      "category": "Linen",
+      "availability": "Available",
+      "quantity_in_stock": 80,
+      "quantity_in_reorder": 30,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 8,
+      "item": {
+        "name": "Bathrobes",
+        "image_url": "link_to_image"
+      },
+      "category": "Linen",
+      "availability": "Low",
+      "quantity_in_stock": 10,
+      "quantity_in_reorder": 50,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 9,
+      "item": {
+        "name": "Slippers",
+        "image_url": "link_to_image"
+      },
+      "category": "Guest Comfort",
+      "availability": "Available",
+      "quantity_in_stock": 150,
+      "quantity_in_reorder": 50,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 10,
+      "item": {
+        "name": "Water Bottles",
+        "image_url": "link_to_image"
+      },
+      "category": "Refreshments",
+      "availability": "Available",
+      "quantity_in_stock": 200,
+      "quantity_in_reorder": 100,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 11,
+      "item": {
+        "name": "Kettle",
+        "image_url": "link_to_image"
+      },
+      "category": "Kitchen",
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
+      "quantity_in_reorder": 130,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 12,
+      "item": {
+        "name": "Coffee Mugs",
+        "image_url": "link_to_image"
+      },
+      "category": "Refreshments",
+      "availability": "Available",
+      "quantity_in_stock": 150,
+      "quantity_in_reorder": 70,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 13,
+      "item": {
+        "name": "Shower Gel",
+        "image_url": "link_to_image"
+      },
+      "category": "Toiletries",
+      "availability": "Available",
+      "quantity_in_stock": 40,
+      "quantity_in_reorder": 90,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 14,
+      "item": {
+        "name": "Pillows",
+        "image_url": "link_to_image"
+      },
+      "category": "Linen",
+      "availability": "Low",
+      "quantity_in_stock": 5,
+      "quantity_in_reorder": 60,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 15,
+      "item": {
+        "name": "Toothbrush",
+        "image_url": "link_to_image"
+      },
+      "category": "Toiletries",
+      "availability": "Available",
+      "quantity_in_stock": 100,
+      "quantity_in_reorder": 50,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 16,
+      "item": {
+        "name": "Hair Dryer",
+        "image_url": "link_to_image"
+      },
+      "category": "Electronics",
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
+      "quantity_in_reorder": 80,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 17,
+      "item": {
+        "name": "Towels",
+        "image_url": "link_to_image"
+      },
+      "category": "Linen",
+      "availability": "Available",
+      "quantity_in_stock": 70,
+      "quantity_in_reorder": 30,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 18,
+      "item": {
+        "name": "Hand Sanitizer",
+        "image_url": "link_to_image"
+      },
+      "category": "Toiletries",
+      "availability": "Available",
+      "quantity_in_stock": 80,
+      "quantity_in_reorder": 40,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 19,
+      "item": {
+        "name": "Wine Glasses",
+        "image_url": "link_to_image"
+      },
+      "category": "Kitchen",
+      "availability": "Low",
+      "quantity_in_stock": 30,
+      "quantity_in_reorder": 20,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    },
+    {
+      "id": 20,
+      "item": {
+        "name": "Toilet Paper",
+        "image_url": "link_to_image"
+      },
+      "category": "Housekeeping",
+      "availability": "Available",
+      "quantity_in_stock": 400,
+      "quantity_in_reorder": 150,
+      "actions": {
+        "view_detail": "View Detail",
+        "reorder": "Reorder"
+      }
+    }
+  ]
+}
