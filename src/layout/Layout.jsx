@@ -54,8 +54,8 @@ const Layout = () => {
                         to={item.path}
                         className={({ isActive }) =>
                           isActive
-                            ? "flex gap-2 items-center py-[10px] rounded-lg bg-[#E7F68E] px-2 font-lato text-sm font-semibold leading-[1] tracking-[0.14px] "
-                            : "flex gap-2 rounded-lg items-center py-[10px] px-2 text-[#A3A3A3] font-lato text-sm font-semibold leading-[1] tracking-[0.14px]"
+                            ? "flex gap-2 items-center py-[10px] rounded-lg bg-[#E7F68E] px-2  text-sm font-semibold leading-[1] tracking-[0.14px] "
+                            : "flex gap-2 rounded-lg items-center py-[10px] px-2 text-[#A3A3A3]  text-sm font-semibold leading-[1] tracking-[0.14px]"
                         }
                       >
                         <item.icon />

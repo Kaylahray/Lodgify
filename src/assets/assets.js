@@ -9,8 +9,20 @@ import CalendarIcon from "./CalendarIcon.svg";
 import FinancialsIcon from "./FinancialsIcon.svg";
 import ReviewsIcon from "./ReviewsIcon.svg";
 import ConciergeIcon from "./ConciergeIcon.svg";
+import StatsCal from "./StatsCalender.svg";
+import StatSignin from "./StatsSignin.svg";
+import StatSignout from "./StatsSignout.svg";
+import TrendDown from "./TrendDown.svg";
+import TrendUp from "./TrendUplight.svg";
+import Dollar from "./CurrencyCircleDollar.svg";
 export {
   Logo,
+  Dollar,
+  TrendDown,
+  TrendUp,
+  StatSignin,
+  StatSignout,
+  StatsCal,
   DashIcon,
   ReservationIcon,
   RoomsIcon,

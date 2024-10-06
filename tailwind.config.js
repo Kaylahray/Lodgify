@@ -6,6 +6,15 @@ export default {
       gridTemplateColumns: {
         layout: "200px 1fr",
       },
+      fontFamily: {
+        sans: ["Lato", "sans-serif"],
+      },
+      colors: {
+        customBlue: "#D5F6E5",
+        customYellow: "#E7F68E",
+        customPink: "#FFC7C7",
+        blueSubtle: "#F5FDF9",
+      },
     },
   },
   plugins: [],
