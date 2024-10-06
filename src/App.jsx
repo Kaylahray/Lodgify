@@ -4,7 +4,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-
 import Dashboard from "./pages/Dashboard";
 import Rooms from "./pages/Rooms";
 import Reservation from "./pages/Reservation";
@@ -15,6 +14,10 @@ import Inventory from "./pages/Inventory";
 import Calender from "./pages/Calender";
 import Financials from "./pages/Financials";
 import Concierge from "./pages/Concierge";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,9 +38,12 @@ const router = createBrowserRouter([
   },
 ]);
 const App = () => {
+  const queryClient = new QueryClient();
   return (
     <div className="w-screen">
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </div>
   );
 };

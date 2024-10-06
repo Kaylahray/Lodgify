@@ -172,8 +172,8 @@
         "image_url": "link_to_image"
       },
       "category": "Refreshments",
-      "availability": "Available",
-      "quantity_in_stock": 150,
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
       "quantity_in_reorder": 70,
       "actions": {
         "view_detail": "View Detail",
@@ -187,8 +187,8 @@
         "image_url": "link_to_image"
       },
       "category": "Toiletries",
-      "availability": "Available",
-      "quantity_in_stock": 40,
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
       "quantity_in_reorder": 90,
       "actions": {
         "view_detail": "View Detail",
@@ -202,8 +202,8 @@
         "image_url": "link_to_image"
       },
       "category": "Linen",
-      "availability": "Low",
-      "quantity_in_stock": 5,
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
       "quantity_in_reorder": 60,
       "actions": {
         "view_detail": "View Detail",
@@ -217,8 +217,8 @@
         "image_url": "link_to_image"
       },
       "category": "Toiletries",
-      "availability": "Available",
-      "quantity_in_stock": 100,
+      "availability": "Out of Stock",
+      "quantity_in_stock": 0,
       "quantity_in_reorder": 50,
       "actions": {
         "view_detail": "View Detail",
@@ -232,8 +232,8 @@
         "image_url": "link_to_image"
       },
       "category": "Electronics",
-      "availability": "Out of Stock",
-      "quantity_in_stock": 0,
+      "availability": "Available",
+      "quantity_in_stock": 80,
       "quantity_in_reorder": 80,
       "actions": {
         "view_detail": "View Detail",
@@ -292,7 +292,7 @@
         "image_url": "link_to_image"
       },
       "category": "Housekeeping",
-      "availability": "Available",
+      "availability": "Low",
       "quantity_in_stock": 400,
       "quantity_in_reorder": 150,
       "actions": {
