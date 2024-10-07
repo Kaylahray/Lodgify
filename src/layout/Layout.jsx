@@ -5,7 +5,6 @@ import {
   ReservationIcon,
   RoomsIcon,
   MessagesIcon,
-  HousekeepingIcon,
   InventoryIcon,
   CalendarIcon,
   FinancialsIcon,
