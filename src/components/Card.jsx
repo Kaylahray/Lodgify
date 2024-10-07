@@ -1,4 +1,5 @@
 import React from "react";
+import ChartButton from "./ChartButton";
 
 const Card = ({
   title,
@@ -17,10 +18,10 @@ const Card = ({
     >
       <div className="flex justify-between items-start">
         <div className="flex flex-col items-start gap-0.5 w-[118px]">
-          <h1 className="text-[11px] font-normal leading-[1.4] text-[#6E6E6E]">
+          <h1 className="text-[11px] font-normal leading-[1.4] text-customGray">
             {title}
           </h1>
-          <p className="text-[22px] font-bold leading-[1.2] text-[#0D0E0D]">
+          <p className="text-[22px] font-bold leading-[1.2] text-customBlack">
             {value}
           </p>
         </div>
@@ -50,11 +51,11 @@ const Card = ({
             `}
         >
           <Icon2 />
-          <p className="text-[10px] font-normal leading-[1.4] text-[#6E6E6E]">
+          <p className="text-[10px] font-normal leading-[1.4] text-customGray">
             {percentage}%
           </p>
         </div>
-        <p className="text-[10px] font-normal leading-[1.4] text-[#6E6E6E]">
+        <p className="text-[10px] font-normal leading-[1.4] text-customGray">
           from last week
         </p>
       </div>

@@ -14,6 +14,8 @@ export default {
         customYellow: "#E7F68E",
         customPink: "#FFC7C7",
         blueSubtle: "#F5FDF9",
+        customBlack: "#0D0E0D",
+        customGray: "#6E6E6E",
       },
     },
   },
