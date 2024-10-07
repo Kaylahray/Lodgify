@@ -25,7 +25,7 @@ const navigation = [
   {
     name: "Housekeeping",
     path: "/housekeeping",
-    icon: HousekeepingIcon,
+    icon: MessagesIcon,
   },
   { name: "Inventory", path: "/inventory", icon: InventoryIcon },
   { name: "Calendar", path: "/calendar", icon: CalendarIcon },
