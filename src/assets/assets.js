@@ -3,7 +3,6 @@ import DashIcon from "./DashIcon.svg";
 import ReservationIcon from "./ReservationIcon.svg";
 import RoomsIcon from "./RoomsIcon.svg";
 import MessagesIcon from "./MessagesIcon.svg";
-import HousekeepingIcon from "./HousekeepingIconn.svg";
 import InventoryIcon from "./InventoryIcon.svg";
 import CalendarIcon from "./CalendarIcon.svg";
 import FinancialsIcon from "./FinancialsIcon.svg";
@@ -27,7 +26,6 @@ export {
   ReservationIcon,
   RoomsIcon,
   MessagesIcon,
-  HousekeepingIcon,
   InventoryIcon,
   CalendarIcon,
   FinancialsIcon,
