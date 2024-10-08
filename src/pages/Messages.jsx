@@ -50,7 +50,7 @@ export default function Example() {
                   </div>
                 </div>
                 {/* Main */}
-                <div>
+                {/* <div>
                   <div className="pb-1 sm:pb-6">
                     <div>
                       <div className="relative h-40 sm:h-56">
@@ -179,7 +179,7 @@ export default function Example() {
                       </div>
                     </dl>
                   </div>
-                </div>
+                </div> */}
               </div>
             </DialogPanel>
           </div>
