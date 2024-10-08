@@ -16,6 +16,7 @@ export default {
         blueSubtle: "#F5FDF9",
         customBlack: "#0D0E0D",
         customGray: "#6E6E6E",
+        customGraySec: "#F8F8F8",
       },
     },
   },

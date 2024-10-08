@@ -1,5 +1,5 @@
 import React from "react";
-import ChartButton from "./ChartButton";
+import ChartButton from "./SelectButton";
 
 const Card = ({
   title,

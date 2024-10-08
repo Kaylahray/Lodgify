@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-const ChartButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Last 7 Days");
+import { CaretDown } from "../assets/assets";
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+const SelectButton = ({ second, first, text, third }) => {
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [selectedOption, setSelectedOption] = useState("Last 7 Days");
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false); // Close dropdown after selection
-  };
+  // const toggleDropdown = () => {
+  //   setIsOpen(!isOpen);
+  // };
+
+  // const handleOptionSelect = (option) => {
+  //   setSelectedOption(option);
+  //   setIsOpen(false);
+  // };
   return (
     <div className="relative inline-block text-left">
       <button
-        onClick={toggleDropdown}
+        // onClick={toggleDropdown}
         className="flex items-center gap-[2px] px-1.5 py-2 bg-customYellow text-[12px] font-semibold leading-[110%] tracking-[0.12px] rounded-md focus:outline-none"
       >
-        {selectedOption}
-        {/* Toggle Arrow */}
-        {isOpen ? <FaChevronUp /> : <FaChevronDown />}
+        {first && text}
+        {second && text}
+        {third && text}
+        <CaretDown />
       </button>
 
-      {/* Dropdown options */}
-      {isOpen && (
+      {/* {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
           <ul className="py-1">
             <li
@@ -41,9 +41,9 @@ const ChartButton = () => {
             </li>
           </ul>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
-export default ChartButton;
+export default SelectButton;

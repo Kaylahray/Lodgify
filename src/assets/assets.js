@@ -14,16 +14,25 @@ import StatSignout from "./StatsSignout.svg";
 import TrendDown from "./TrendDown.svg";
 import TrendUp from "./TrendUplight.svg";
 import Dollar from "./CurrencyCircleDollar.svg";
+import Funnel from "./Funnel.svg";
+import CalenderBlank from "./CalenderBlank.svg";
+import CaretDown from "./CaretDown.svg";
+import Search from "./Search.svg";
+
 export {
   Logo,
   Dollar,
   TrendDown,
   TrendUp,
   StatSignin,
+  Search,
   StatSignout,
+  CalenderBlank,
+  CaretDown,
   StatsCal,
   DashIcon,
   ReservationIcon,
+  Funnel,
   RoomsIcon,
   MessagesIcon,
   InventoryIcon,

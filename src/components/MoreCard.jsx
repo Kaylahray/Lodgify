@@ -9,9 +9,7 @@ const MoreCard = ({ title, children }) => {
         </p>
         <IoIosMore />
       </div>
-      <div>
-      {children}
-      </div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
