@@ -4,8 +4,13 @@ import { RxCaretSort } from "react-icons/rx";
 import TableBody from "../components/TableBody";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import CaretSelect from "../components/CaretSelect";
+import Button from "../components/Button";
+import SearchBar from "../components/SearchBar";
 import Paginate from "../components/Paginate";
-import SecondTableCard from "../components/SecondTableCard";
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import { SiTruenas } from "react-icons/si";
+
 const Inventory = () => {
   const fetchTableData = (pageId) => {
     return axios.get(
@@ -24,18 +29,18 @@ const Inventory = () => {
   }
   return (
     <>
-      <SecondTableCard
-        search={true}
-        btn={true}
-        btnTitle="Add Room"
-        normalSelectText="hello"
-        normalSelect={true}
-        secondNormalSelectText="heyyyyy"
-        second={true}
-        first={true}
+      <SecondLayoutCard
+        search={<SearchBar />}
+        component={
+          <>
+            <CaretSelect btnText="one" />
+            <CaretSelect btnText="two" />
+            <Button btnText="soon" />
+          </>
+        }
       >
-        <table className="table w-full border-separate border-spacing-y-2 text-tableTextColor">
-          <TableHeader>
+        <table className="table bg-blue-200 w-full border-separate border-spacing-y-2">
+          <TableHeader check={true}>
             <th>
               <span className="pr-1">Item</span>
               <RxCaretSort className="inline text-sm" />
@@ -104,7 +109,7 @@ const Inventory = () => {
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     <span
-                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium  
+                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium
                     ${
                       availability === "Available"
                         ? "bg-[#F3FBC7]"
@@ -140,7 +145,7 @@ const Inventory = () => {
           </TableBody>
         </table>
         <Paginate page={page} setPage={setPage} />
-      </SecondTableCard>
+      </SecondLayoutCard>
     </>
   );
 };

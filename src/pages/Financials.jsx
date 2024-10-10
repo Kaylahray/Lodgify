@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import { Outlet, redirect, useNavigate } from "react-router-dom";
 
 const Financials = () => {
-  return (
-    <div>Financials</div>
-  )
-}
+  return <Outlet />;
+};
 
-export default Financials
+export default Financials;

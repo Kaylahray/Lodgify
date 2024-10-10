@@ -1,5 +1,9 @@
 import React from "react";
-import SecondTableCard from "../components/SecondTableCard";
+// import SecondTableCard from "../components/SecondTableCard";
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import CaretSelect from "../components/CaretSelect";
+import Button from "../components/Button";
+import SearchBar from "../components/SearchBar";
 const deployments = [
   {
     id: 1,
@@ -11,7 +15,6 @@ const deployments = [
     description: "Deploys from GitHub",
     environment: "Preview",
   },
-  // More deployments...
 ];
 const activityItems = [
   {
@@ -33,20 +36,23 @@ const Rooms = () => {
   return (
     <>
       <main className="lg:pr-96">
-        <SecondTableCard
-          search={true}
-          btn={true}
-          btnTitle="Add Room"
-          normalSelectText="hello"
-          normalSelect={true}
-          secondNormalSelect={true}
-          secondNormalSelectText="heyyyyy"
-          second={true}
-          first={true}
-          color6="customGraySec"
+        <SecondLayoutCard
+          search={
+            <SearchBar placeholder="Search room type, number, etc" />
+          }
+          component={
+            <>
+              <span className="font-fig text-[12px] font-normal leading-[1.4] text-figGray">
+                Sort by:
+              </span>
+              <CaretSelect btnText="Popular" bg="customG" />
+              <CaretSelect btnText="All Type" bg="customG" />
+              <Button btnText="Add Room" />
+            </>
+          }
         >
           hello
-        </SecondTableCard>
+        </SecondLayoutCard>
       </main>
 
       <aside className="bg-black/10 lg:fixed lg:bottom-0 lg:right-0 lg:top-16 lg:w-96 lg:overflow-y-auto lg:border-l lg:border-white/5">

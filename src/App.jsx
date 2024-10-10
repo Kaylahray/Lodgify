@@ -31,7 +31,11 @@ const router = createBrowserRouter([
       { path: "housekeeping", element: <HouseKeeping /> },
       { path: "inventory", element: <Inventory /> },
       { path: "calendar", element: <Calender /> },
-      { path: "financials", element: <Financials /> },
+      {
+        path: "financials",
+        element: <Financials />,
+        children: [{ path: "invoice", element: <Calender /> }],
+      },
       { path: "reviews", element: <Reviews /> },
       { path: "concierge", element: <Concierge /> },
     ],
@@ -40,11 +44,9 @@ const router = createBrowserRouter([
 const App = () => {
   const queryClient = new QueryClient();
   return (
-    <div className="w-screen">
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 };
 

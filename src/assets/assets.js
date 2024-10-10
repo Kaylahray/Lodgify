@@ -18,10 +18,12 @@ import Funnel from "./Funnel.svg";
 import CalenderBlank from "./CalenderBlank.svg";
 import CaretDown from "./CaretDown.svg";
 import Search from "./Search.svg";
+import IoIosMore from "./IoIosMore.svg";
 
 export {
   Logo,
   Dollar,
+  IoIosMore,
   TrendDown,
   TrendUp,
   StatSignin,

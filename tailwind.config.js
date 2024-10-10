@@ -8,6 +8,7 @@ export default {
       },
       fontFamily: {
         sans: ["Lato", "sans-serif"],
+        fig: ["Figtree", "sans-serif"],
       },
       colors: {
         customBlue: "#D5F6E5",
@@ -16,7 +17,8 @@ export default {
         blueSubtle: "#F5FDF9",
         customBlack: "#0D0E0D",
         customGray: "#6E6E6E",
-        customGraySec: "#F8F8F8",
+        customG: "#F8F8F8",
+        figGray: "#A4A5A5",
       },
     },
   },

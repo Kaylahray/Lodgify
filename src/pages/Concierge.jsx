@@ -1,17 +1,20 @@
 import React from "react";
-import SecondTableCard from "../components/SecondTableCard";
-
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import SearchBar from "../components/SearchBar";
+import CaretSelect from "../components/CaretSelect";
 const Concierge = () => {
   return (
-    <SecondTableCard
-      btnTitle="Reservation List"
-      search={true}
-      normalSelect={true}
-      normalSelectText="All Status"
-      first={true}
+    <SecondLayoutCard
+      search={<SearchBar />}
+      component={
+        <>
+          <CaretSelect btnText="one" />
+          <CaretSelect btnText="two" />
+        </>
+      }
     >
       hello
-    </SecondTableCard>
+    </SecondLayoutCard>
   );
 };
 

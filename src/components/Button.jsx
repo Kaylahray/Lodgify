@@ -1,9 +1,9 @@
 import React from "react";
 
-const Button = ({ title }) => {
+const Button = ({ btnText }) => {
   return (
-    <button className="py-1.5 px-3 rounded-md text-nowrap h-10 bg-customYellow">
-      {title}
+    <button className="py-1.5 px-3 rounded-md text-nowrap text-[12px] font-semibold leading-[1.1] tracking-[0.12px] bg-customYellow">
+      {btnText}
     </button>
   );
 };

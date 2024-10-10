@@ -4,8 +4,12 @@ import { RxCaretSort } from "react-icons/rx";
 import TableBody from "../components/TableBody";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import CaretSelect from "../components/CaretSelect";
+import Button from "../components/Button";
+import SearchBar from "../components/SearchBar";
 import Paginate from "../components/Paginate";
-import SecondTableCard from "../components/SecondTableCard";
+import SecondLayoutCard from "../components/SecondLayoutCard";
+
 const HouseKeeping = () => {
   const fetchTableData = (pageId) => {
     return axios.get(
@@ -24,17 +28,15 @@ const HouseKeeping = () => {
   }
   return (
     <>
-      <SecondTableCard
-        search={true}
-        selectDoubleIcon={true}
-        selectDoubleIconTitle="All Status"
-        color1="customYellow"
-        color3="customYellow"
-        color4="customYellow"
-        repeatFunnel={true}
-        repeatFunnel2={true}
-        repeatFunnel2Text="jesuuu"
-        repeatFunnelText="okkkayyy"
+      <SecondLayoutCard
+        search={<SearchBar />}
+        component={
+          <>
+            <CaretSelect btnText="one" />
+            <CaretSelect btnText="two" />
+            <Button btnText="soon" />
+          </>
+        }
       >
         <table className="table w-full border-separate border-spacing-y-2 text-tableTextColor">
           <TableHeader>
@@ -106,7 +108,7 @@ const HouseKeeping = () => {
                   </td>
                   <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                     <span
-                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium  
+                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium
                     ${
                       availability === "Available"
                         ? "bg-[#F3FBC7]"
@@ -142,7 +144,7 @@ const HouseKeeping = () => {
           </TableBody>
         </table>
         <Paginate page={page} setPage={setPage} />
-      </SecondTableCard>
+      </SecondLayoutCard>
     </>
   );
 };

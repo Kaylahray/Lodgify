@@ -1,28 +1,35 @@
 import React from "react";
-import SelectCard from "../components/SelectCard";
-import MoreCard from "../components/MoreCard";
 import ReviewGrid from "../components/ReviewGrid";
+import LayoutCard from "../components/LayoutCard";
+import CaretSelect from "../components/CaretSelect";
+import MoreOptionCard from "../components/MoreOptionCard";
+import RadialChartStacked from "../features/reviews/LinearBar";
 const Reviews = () => {
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-5">
-        <SelectCard
-          title="Revenue"
-          selectDoubleIcon2={true}
-          selectDoubleIconTitle2="19-20-200"
+        <LayoutCard
+          title="hello"
+          component={
+            <>
+              <CaretSelect btnText="imhokayyyyeee" />
+            </>
+          }
         >
-          okayyyy
-        </SelectCard>
-        <SelectCard
-          title="Revenue"
-          normalSelectText="This Week"
-          normalSelect={true}
-          first={true}
+          <RadialChartStacked />
+        </LayoutCard>
+        <LayoutCard
+          title="hello"
+          component={
+            <>
+              <CaretSelect btnText="imhokayyyyeee" />
+            </>
+          }
         >
-          okayyyy
-        </SelectCard>
+          <p>sorrryyyy</p>
+        </LayoutCard>
       </div>
-      <MoreCard />
+      <MoreOptionCard title="okat" />
       <ReviewGrid />
     </div>
   );
