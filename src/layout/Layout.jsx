@@ -28,6 +28,7 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const navigation = [
   { name: "Dashboard", path: "/", icon: DashIcon },
@@ -69,14 +70,13 @@ const Layout = () => {
   };
   const showSubnav = () => setSubNav(!subnav);
   return (
-    <>
-      {/* Static sidebar for desktop */}
+    <div>
+      {/* sidebar */}
       <div
         className={`fixed inset-y-0 z-50 flex lg:w-[192px] flex-col transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } `}
       >
-        {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-4 py-6">
           <button
             type="button"
@@ -160,7 +160,8 @@ const Layout = () => {
       </div>
 
       <div className="lg:pl-48 bg-customG">
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        {/* header */}
+        <div className="sticky top-0 z-40 flex  bg-customG h-16 shrink-0 items-center gap-x-4  px-4  sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
             onClick={toggleSidebar}
@@ -176,13 +177,16 @@ const Layout = () => {
             hello
           </header>
         </div>
-        <main className="py-10">
-          <div className="px-4 sm:px-6 lg:px-8">
+        {/* main */}
+        <main className="py-4">
+          <div className="px-4 sm:px-6 ">
             <Outlet />
           </div>
         </main>
+        {/* footer */}
+        <Footer />
       </div>
-    </>
+    </div>
   );
 };
 

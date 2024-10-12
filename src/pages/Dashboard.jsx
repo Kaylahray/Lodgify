@@ -9,11 +9,14 @@ import CaretSelect from "../components/CaretSelect";
 import SearchBar from "../components/SearchBar";
 import LayoutCard from "../components/LayoutCard";
 import LinearBar from "../features/reviews/LinearBar";
-import RatingChart from "../features/reviews/dashboard/RatingChart";
+import RatingChart from "../features/dashboard/RatingChart";
+import TaskCard from "../features/dashboard/TaskCard";
+import TimelineCard from "../features/dashboard/TimelineCard";
+
 const Dashboard = () => {
   return (
     <>
-      <div className="text-3xl grid grid-cols-[3fr_1fr] gap-4">
+      <div className="text-3xl grid grid-cols-[2.65fr_1fr] gap-4">
         <div className="flex flex-col gap-5">
           <FourCards />
           <div className="grid grid-cols-[1fr_2fr] gap-5">
@@ -59,13 +62,15 @@ const Dashboard = () => {
           </LayoutCard>
         </div>
 
-        <div className="bg-green-600 flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <MoreOptionCard title="Overall Rating">
             <RatingChart />
           </MoreOptionCard>
-          <MoreOptionCard title="Tasks">hellow</MoreOptionCard>
+
+          <TaskCard />
+
           <MoreOptionCard title="Recent Activities">
-            hellow
+            <TimelineCard />
           </MoreOptionCard>
         </div>
       </div>

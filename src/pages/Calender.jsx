@@ -1,7 +1,11 @@
 import React from "react";
-
+import GuestProfile from "../features/reservation/GuestProfile";
 const Calender = () => {
-  return <div>I8G44I83Odvd9UMe</div>;
+  return (
+    <div>
+      <GuestProfile />
+    </div>
+  );
 };
 
 export default Calender;

@@ -1,152 +1,243 @@
-import React, { useState } from "react";
-import TableHeader from "../components/TableHeader";
-import { RxCaretSort } from "react-icons/rx";
-import TableBody from "../components/TableBody";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import React, { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+} from "@tanstack/react-table";
 import axios from "axios";
-import CaretSelect from "../components/CaretSelect";
-import Button from "../components/Button";
-import SearchBar from "../components/SearchBar";
-import Paginate from "../components/Paginate";
-import SecondLayoutCard from "../components/SecondLayoutCard";
-import { SiTruenas } from "react-icons/si";
+import { DateTime } from "luxon"; // For date formatting
+
+// Columns for the table
+const columns = [
+  {
+    header: "Guest",
+    accessorKey: "guest",
+    footer: "Guest",
+  },
+  {
+    header: "Room",
+    accessorKey: "room",
+    footer: "Room",
+  },
+  {
+    header: "Request",
+    accessorKey: "request",
+    footer: "Request",
+  },
+  {
+    header: "Nights",
+    accessorKey: "nights",
+    footer: "Nights",
+  },
+  {
+    header: "Check In / Check Out",
+    accessorKey: "checkIn",
+    footer: "Check In / Check Out",
+    cell: (info) => {
+      const checkIn = DateTime.fromISO(
+        info.row.original.checkIn
+      ).toLocaleString(DateTime.DATE_MED);
+      const checkOut = DateTime.fromISO(
+        info.row.original.checkOut
+      ).toLocaleString(DateTime.DATE_MED);
+      return `${checkIn} - ${checkOut}`;
+    },
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    footer: "Status",
+    cell: (info) => {
+      const status = info.getValue();
+      return (
+        <span
+          style={{
+            padding: "5px 10px",
+            backgroundColor:
+              status === "Confirmed"
+                ? "green"
+                : status === "Pending"
+                ? "yellow"
+                : "red",
+            color: "white",
+            borderRadius: "5px",
+          }}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Actions",
+    accessorKey: "actions",
+    footer: "Actions",
+    cell: () => (
+      <>
+        <button
+          style={{
+            marginRight: "5px",
+            padding: "5px",
+            background: "green",
+            color: "white",
+          }}
+        >
+          Confirm
+        </button>
+        <button
+          style={{
+            padding: "5px",
+            background: "red",
+            color: "white",
+          }}
+        >
+          Cancel
+        </button>
+      </>
+    ),
+  },
+];
+
+// Mockaroo Data Fetch
+const fetchReservations = async () => {
+  const { data } = await axios.get("http://localhost:8000/data");
+  return data;
+};
 
 const Inventory = () => {
-  const fetchTableData = (pageId) => {
-    return axios.get(
-      `http://localhost:8000/data?_limit=10&_page=${pageId}`
-    );
-  };
-  const [page, setPage] = useState(1);
-  const { isLoading, data } = useQuery({
-    queryKey: ["inventory", page],
-    queryFn: () => fetchTableData(page),
-    placeholderData: keepPreviousData,
+  // Fetching data using Tanstack Query
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["reservations"],
+    queryFn: fetchReservations,
   });
 
-  if (isLoading) {
-    return <h1>loading</h1>;
-  }
+  const [sorting, setSorting] = useState([]);
+  const [filtering, setFiltering] = useState("");
+
+  // Use React Table
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting: sorting,
+      globalFilter: filtering,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setFiltering,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
+
   return (
-    <>
-      <SecondLayoutCard
-        search={<SearchBar />}
-        component={
-          <>
-            <CaretSelect btnText="one" />
-            <CaretSelect btnText="two" />
-            <Button btnText="soon" />
-          </>
-        }
-      >
-        <table className="table bg-blue-200 w-full border-separate border-spacing-y-2">
-          <TableHeader check={true}>
-            <th>
-              <span className="pr-1">Item</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1"> Category</span>
+    <div>
+      <input
+        type="text"
+        placeholder="Search"
+        value={filtering}
+        onChange={(e) => setFiltering(e.target.value)}
+        style={{
+          marginBottom: "10px",
+          padding: "5px",
+          width: "300px",
+        }}
+      />
 
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Availability</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Quantity in Stock</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Quantity in reorder</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Action</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-          </TableHeader>
-          <TableBody>
-            {data?.data.map((tableitem) => {
-              const {
-                item,
-                category,
-                availability,
-                quantity_in_stock,
-                quantity_in_reorder,
-                actions,
-              } = tableitem;
-              return (
-                <tr key={item.name}>
-                  <td
-                    scope="col"
-                    className="relative px-7 py-6 sm:w-12 sm:px-6 rounded-tr-none rounded-t-lg"
-                  >
-                    <input
-                      type="checkbox"
-                      className={`absolute left-4 top-1/2 -mt-2 h-4 w-4  rounded border-[#8F8F8F] text-indigo-600 focus:ring-indigo-600 `}
-                    />
-                  </td>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  style={{
+                    cursor: "pointer",
+                    padding: "10px",
+                    borderBottom: "1px solid black",
+                  }}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                  {header.column.getIsSorted() === "asc"
+                    ? " 🔼"
+                    : header.column.getIsSorted() === "desc"
+                    ? " 🔽"
+                    : null}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
 
-                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                    <div className="flex items-center">
-                      <div className="h-11 w-11 flex-shrink-0">
-                        <img
-                          alt=""
-                          className="h-11 w-11 rounded-full"
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <div className="font-medium text-gray-900">
-                          {item.name}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <div className="text-gray-900">{category}</div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <span
-                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium
-                    ${
-                      availability === "Available"
-                        ? "bg-[#F3FBC7]"
-                        : availability === "Low"
-                        ? "bg-[#D5F6E5]"
-                        : "bg-[#FEE]"
-                    }`}
-                    >
-                      {availability}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    {quantity_in_stock}
-                  </td>
-                  <td className="whitespace-nowrap py-5 pl-3 pr-4 text-sm font-medium sm:pr-0">
-                    {quantity_in_reorder}
-                  </td>
-                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="inline-flex items-center rounded-md bg-green-50  text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                          {actions.view_detail}
-                        </span>
-                      </div>
-                      <div className="ml-2 font-medium text-gray-900">
-                        {actions.reorder}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </TableBody>
-        </table>
-        <Paginate page={page} setPage={setPage} />
-      </SecondLayoutCard>
-    </>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  style={{
+                    padding: "10px",
+                    borderBottom: "1px solid black",
+                  }}
+                >
+                  {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "10px" }}>
+        Page {table.getState().pagination.pageIndex + 1} of{" "}
+        {table.getPageCount()}
+      </div>
+
+      <div style={{ marginTop: "10px" }}>
+        <button
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+          style={{ marginRight: "5px", padding: "5px" }}
+        >
+          First page
+        </button>
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+          style={{ marginRight: "5px", padding: "5px" }}
+        >
+          Previous page
+        </button>
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+          style={{ marginRight: "5px", padding: "5px" }}
+        >
+          Next page
+        </button>
+        <button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+          style={{ padding: "5px" }}
+        >
+          Last Page
+        </button>
+      </div>
+    </div>
   );
 };
 

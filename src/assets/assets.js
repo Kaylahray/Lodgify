@@ -19,9 +19,31 @@ import CalenderBlank from "./CalenderBlank.svg";
 import CaretDown from "./CaretDown.svg";
 import Search from "./Search.svg";
 import IoIosMore from "./IoIosMore.svg";
+import Maintainance from "./Maintainance.svg";
+import CleaningCompleted from "./CleaningCompleted.svg";
+import TimelineConference from "./TimelineConference.svg";
+import Facebook from "./Facebook.svg";
+import Twitter from "./Twitter.svg";
+import Instagram from "./Instagram.svg";
+import Linkedin from "./Linkedin.svg";
+import Youtube from "./Youtube.svg";
+import Bed from "./Bed.svg";
+import Guest from "./Guest.svg";
+import Size from "./Size.svg";
 
 export {
   Logo,
+  Facebook,
+  Instagram,
+  Size,
+  Guest,
+  Bed,
+  Linkedin,
+  Youtube,
+  Twitter,
+  Maintainance,
+  TimelineConference,
+  CleaningCompleted,
   Dollar,
   IoIosMore,
   TrendDown,

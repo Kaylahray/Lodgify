@@ -19,6 +19,11 @@ export default {
         customGray: "#6E6E6E",
         customG: "#F8F8F8",
         figGray: "#A4A5A5",
+        lightGray: "#A3A3A3",
+        customLightYellow: "#F3FBC7",
+      },
+      scrollbar: {
+        none: "scrollbar-width: none; -ms-overflow-style: none;",
       },
     },
   },
