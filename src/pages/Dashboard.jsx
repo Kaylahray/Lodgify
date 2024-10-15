@@ -12,7 +12,9 @@ import LinearBar from "../features/reviews/LinearBar";
 import RatingChart from "../features/dashboard/RatingChart";
 import TaskCard from "../features/dashboard/TaskCard";
 import TimelineCard from "../features/dashboard/TimelineCard";
-
+import { ChartRevenue } from "../features/dashboard/ChartRevenue";
+import { ChartBooking } from "../features/dashboard/ChartBooking";
+import { ChartReservations } from "../features/dashboard/ChartReservation";
 const Dashboard = () => {
   return (
     <>
@@ -31,7 +33,7 @@ const Dashboard = () => {
                 </>
               }
             >
-              <p>sorrryyyy</p>
+              <ChartRevenue />
             </LayoutCard>
           </div>
           <div className="grid grid-cols-[1fr_1fr] gap-5">
@@ -43,10 +45,10 @@ const Dashboard = () => {
                 </>
               }
             >
-              <p>sorrryyooo</p>
+              <ChartReservations />
             </LayoutCard>
             <MoreOptionCard title="Booking by Platform">
-              hellow
+              <ChartBooking />
             </MoreOptionCard>
           </div>
           <LayoutCard

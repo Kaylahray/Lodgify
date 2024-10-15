@@ -18,6 +18,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { LodgifyProvider } from "./hooks/usePage";
+import Expense from "./pages/Expense";
+import GuestProfile from "./features/reservation/GuestProfile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,7 +29,18 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "rooms", element: <Rooms /> },
       { path: "reviews", element: <Reviews /> },
-      { path: "reservation", element: <Reservation /> },
+      {
+        path: "reservation",
+        element: <Reservation />,
+      },
+      {
+        path: "/reservation/guest-profile/:id",
+        element: <GuestProfile />,
+      },
+      // {
+      //   path: "/guest-profile/:id",
+      //   element: <GuestProfile />,
+      // },
       { path: "messages", element: <Messages /> },
       { path: "housekeeping", element: <HouseKeeping /> },
       { path: "inventory", element: <Inventory /> },
@@ -34,7 +48,10 @@ const router = createBrowserRouter([
       {
         path: "financials",
         element: <Financials />,
-        children: [{ path: "invoice", element: <Calender /> }],
+        children: [
+          { path: "invoice", element: <Calender /> },
+          { path: "expense", element: <Expense /> },
+        ],
       },
       { path: "reviews", element: <Reviews /> },
       { path: "concierge", element: <Concierge /> },
@@ -45,7 +62,9 @@ const App = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <LodgifyProvider>
+        <RouterProvider router={router} />
+      </LodgifyProvider>
     </QueryClientProvider>
   );
 };

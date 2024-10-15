@@ -3,7 +3,7 @@ import { IoIosMore } from "../assets/assets";
 
 const MoreOptionCard = ({ title, children, add, onAddTask }) => {
   return (
-    <div className="flex p-4 flex-col items-start gap-2 rounded-xl bg-white pb-2">
+    <div className="flex p-4 flex-col items-start gap-5 rounded-xl bg-white ">
       <div className=" flex items-center justify-between w-full">
         <p className="text-[16px] font-medium leading-[125%] text-customBlack">
           {title}

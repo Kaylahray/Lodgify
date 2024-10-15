@@ -1,3 +1,5 @@
-body{
-    font-family: "Lato", system-ui;
+@import "./features/calender/calendar.css";
+
+body {
+  font-family: "Lato", system-ui;
 }

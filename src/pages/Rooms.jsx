@@ -5,12 +5,21 @@ import Button from "../components/Button";
 import SearchBar from "../components/SearchBar";
 import { Size, Guest, Bed } from "../assets/assets";
 import DetailsFeatures from "../features/rooms/DetailsFeatures";
+import SingleFeature from "../features/rooms/SingleFeature";
+import {
+  Coffee,
+  Wifi,
+  Wind,
+  Monitor,
+  Vault,
+  SnowFlake,
+} from "../assets/assets";
 
 const Rooms = () => {
   const [selectedRoom, setSelectedRoom] = useState(null); // State to track the selected room
 
   return (
-    <div className=" gap-6 grid xl:grid-cols-[2fr_1fr] bg-white">
+    <div className=" gap-6 grid xl:grid-cols-[1.5fr_1fr] bg-white">
       {/* Left Sidebar: Room List */}
       <SecondLayoutCard
         search={
@@ -27,7 +36,7 @@ const Rooms = () => {
           </>
         }
       >
-        <div className="bg-red-500 ">
+        <div>
           {/* If selectedRoom is not null, show the RoomDetail only on small screens */}
           <div className="block xl:hidden">
             {selectedRoom ? (
@@ -41,14 +50,14 @@ const Rooms = () => {
           </div>
 
           {/* For larger screens, always show the RoomList on the left side */}
-          <div className="hidden xl:block">
+          <div className="hidden xl:block ">
             <RoomList onSelectRoom={setSelectedRoom} />
           </div>
         </div>
       </SecondLayoutCard>
       <div className="p-4">
         {/* Right Section: Room Detail on larger screens */}
-        <aside className=" inset-y-0 right-0 hidden w-96 overflow-y-auto h-full rounded-lg bg-customG  px-4 py-6 sm:px-6 lg:px-8 xl:block">
+        <aside className=" inset-y-0 right-0 hidden w-full overflow-y-auto h-full rounded-lg bg-customG  px-4 py-6 sm:px-6 lg:px-8 xl:block">
           {selectedRoom ? (
             <RoomDetail
               room={selectedRoom}
@@ -84,12 +93,12 @@ const RoomCard = ({ room, onClick }) => (
     <img
       src={room.image}
       alt={room.type}
-      className="w-20 h-20 object-cover rounded-lg mr-4"
+      className="w-[180px] h-full object-cover rounded-lg mr-4"
     />
 
-    <div className="flex flex-col items-start gap-4 bg-yellow-600 flex-1">
-      <div className="flex justify-between bg-green-600 w-full">
-        <div className="flex flex-col gap-2 bg-red-400">
+    <div className="flex flex-col items-start gap-4 flex-1">
+      <div className="flex justify-between w-full">
+        <div className="flex flex-col gap-2">
           <span className="text-customBlack text-[24px] font-bold leading-[110%] tracking-[0.48px]">
             {room.type}
           </span>
@@ -142,18 +151,22 @@ const RoomCard = ({ room, onClick }) => (
 );
 
 const RoomDetail = ({ room, onBack }) => (
-  <div className="flex flex-col">
+  <div className="flex flex-col w-full">
     {/* <button onClick={onBack} className="mb-4 text-blue-500">
       Back to Room List
     </button> */}
-    <div>
-      <span>Room Details</span>
-      <button>Edit</button>
+    <div className="flex justify-between w-full">
+      <span className="text-[#0D0E0D]  text-base font-medium leading-5">
+        Room Details
+      </span>
+      <button className="text-[#0D0E0D] text-center  text-xs font-medium leading-[110%] tracking-[0.12px] flex justify-center items-center px-3 py-1.5 rounded-md bg-[#E7F68E]">
+        Edit
+      </button>
     </div>
 
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <div>
+        <div className="text-[#0D0E0D] font-lato text-2xl font-semibold leading-[110%]">
           {room.type}
           <span
             className={`text-black font-lato h-fit rounded-md text-[12px] px-2 py-1 font-medium leading-[140%]
@@ -172,32 +185,34 @@ const RoomDetail = ({ room, onBack }) => (
           <span>${room.price}/night</span>
         </p>
       </div>
-      <div className="grid grid-cols-[2fr_1fr]">
+      <div className="grid grid-cols-[2fr_1fr] gap-4">
         {/* Room Image */}
-        <div className="w-full pr-6">
+        <div className="w-full">
           <img
             src={room.image}
             alt={room.type}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-[369px] h-[282px] object-cover rounded-lg"
           />
         </div>
-        <div className="grid">
+        <div className="grid gap-3">
           <img
             src={room.image}
             alt={room.type}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-[75px] h-[58px] object-cover rounded-lg"
           />{" "}
           <img
             src={room.image}
             alt={room.type}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-[75px] h-[58px]  object-cover rounded-lg"
           />{" "}
           <img
             src={room.image}
             alt={room.type}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-[75px] h-[58px] object-cover rounded-lg"
           />
-          <button className="p-6"> View All</button>
+          <button className=" w-[75px] h-[58px] flex items-center justify-center text-nowrap bg-[#E7F68E]">
+            View All
+          </button>
         </div>
       </div>
       <div className="text-customBlack text-[12px] flex gap-[17px] font-normal leading-[140%]">
@@ -217,9 +232,78 @@ const RoomDetail = ({ room, onBack }) => (
       <p className="overflow-hidden w-full text-customGray font-lato text-[12px] font-normal leading-[140%]">
         {room.description}
       </p>
-      <DetailsFeatures title="feature" />
-      <DetailsFeatures title="feature" />
-      <DetailsFeatures title="feature" />
+      <DetailsFeatures title="Features">
+        <SingleFeature
+          text="Private balcony (where applicable)"
+          check={true}
+        />
+        <SingleFeature
+          text="Work desk with ergonomic chair"
+          check={true}
+        />
+        <SingleFeature
+          text="Spacious layout with a modern design"
+          check={true}
+        />
+        <SingleFeature
+          text="Large windows offering city or garden views"
+          check={true}
+        />
+      </DetailsFeatures>
+      <DetailsFeatures title="Facilities" threeCol={true}>
+        <SingleFeature
+          text="High-speed Wi-Fi"
+          others={true}
+          icon={<Wifi />}
+        />{" "}
+        <SingleFeature
+          text="In-room safe"
+          others={true}
+          icon={<Vault />}
+        />{" "}
+        <SingleFeature
+          text="Mini-fridge"
+          others={true}
+          icon={<SnowFlake />}
+        />{" "}
+        <SingleFeature
+          text="Flat-screen TV"
+          others={true}
+          icon={<Monitor />}
+        />{" "}
+        <SingleFeature
+          text="Air conditioning"
+          others={true}
+          icon={<Wind />}
+        />{" "}
+        <SingleFeature
+          text="Coffee/tea maker"
+          others={true}
+          icon={<Coffee />}
+        />{" "}
+      </DetailsFeatures>
+      <DetailsFeatures title="Amenities">
+        <SingleFeature
+          text="Complimentary bottled water"
+          check={true}
+        />{" "}
+        <SingleFeature text="Luxury toiletries" check={true} />{" "}
+        <SingleFeature
+          text="Coffee and tea making facilities"
+          check={true}
+        />{" "}
+        <SingleFeature text="Hairdryer" check={true} />{" "}
+        <SingleFeature
+          text="Premium bedding and linens"
+          check={true}
+        />{" "}
+        <SingleFeature text="Bathrobe and slippers" check={true} />{" "}
+        <SingleFeature
+          text="Ensuite bathroom with shower and bathtub"
+          check={true}
+        />{" "}
+        <SingleFeature text="24-hour room service" check={true} />
+      </DetailsFeatures>
     </div>
   </div>
 );
@@ -228,46 +312,68 @@ const rooms = [
   {
     id: 1,
     type: "Standard",
-    description: "Comfortable standard rooms for travelers.",
+    description:
+      "Comfortable, affordable stay for solo travelers or couples. Queen bed, en-suite bathroom, work desk, essential amenities.",
     size: "25 m²",
-    beds: "Queen Bed",
+    beds: "1 Queen Bed",
     guests: "2 Guests",
     price: 100,
     status: "Occupied",
-    image: "https://via.placeholder.com/100",
-    features: ["Free Wi-Fi", "Ensuite bathroom"],
-    facilities: ["Air conditioning", "Work desk"],
-    amenities: ["Flat-screen TV", "Coffee maker"],
+    availability: "12/20 Rooms",
+    image: "https://via.placeholder.com/100", // Replace with actual image link
   },
   {
     id: 2,
     type: "Deluxe",
-    description: "Spacious room with great city views.",
+    description:
+      "More space and luxury. King bed, separate seating, larger desk, 55-inch TV, en-suite bathroom with bath and shower.",
     size: "35 m²",
-    beds: "King Bed",
+    beds: "1 King Bed",
     guests: "2 Guests",
     price: 150,
     status: "Available",
-    image: "https://via.placeholder.com/100",
-    features: ["Private balcony", "City view"],
-    facilities: ["Free parking", "Room service"],
-    amenities: ["Bathtub", "Minibar"],
+    availability: "8/10 Rooms",
+    image: "https://via.placeholder.com/100", // Replace with actual image link
   },
   {
     id: 3,
     type: "Suite",
-    description: "Luxurious suite with separate living area.",
-    size: "40 m²",
-    beds: "King Bed",
-    guests: "3 Guests",
+    description:
+      "Spacious and private with separate living and sleeping areas. King bed, furnished living area, kitchenette – ideal for extended stays.",
+    size: "50 m²",
+    beds: "1 King Bed",
+    guests: "2 Guests",
     price: 250,
     status: "Available",
-    image: "https://via.placeholder.com/100",
-    features: ["Separate living area", "Dining space"],
-    facilities: ["Spa access", "Free breakfast"],
-    amenities: ["Jacuzzi", "Personal butler service"],
+    availability: "4/10 Rooms",
+    image: "https://via.placeholder.com/100", // Replace with actual image link
   },
-  // Add more room data here...
+  {
+    id: 4,
+    type: "Family",
+    description:
+      "Designed for comfort and practicality. Two queen beds, bunk beds accommodate up to 6 guests. Full-size bathroom, seating area, work space.",
+    size: "45 m²",
+    beds: "2 Queen Beds",
+    guests: "4 Guests",
+    price: 200,
+    status: "Available",
+    availability: "12/15 Rooms",
+    image: "https://via.placeholder.com/100", // Replace with actual image link
+  },
+  {
+    id: 5,
+    type: "Single",
+    description:
+      "Features a single bed, modern en-suite bathroom, work desk, and essential amenities for a practical and functional stay.",
+    size: "20 m²",
+    beds: "1 Single Bed",
+    guests: "1 Guest",
+    price: 70,
+    status: "Available",
+    availability: "17/20 Rooms",
+    image: "https://via.placeholder.com/100", // Replace with actual image link
+  },
 ];
 
 export default Rooms;

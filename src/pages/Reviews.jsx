@@ -3,33 +3,42 @@ import ReviewGrid from "../components/ReviewGrid";
 import LayoutCard from "../components/LayoutCard";
 import CaretSelect from "../components/CaretSelect";
 import MoreOptionCard from "../components/MoreOptionCard";
-import RadialChartStacked from "../features/reviews/LinearBar";
+import { ReviewChart } from "../features/reviews/ReviewStatistics";
+import { Maps } from "../features/reviews/Map";
+import OverAllRating from "../features/reviews/OverAllRating";
+import DoubleCaretSelect from "../components/DoubleCaretSelect";
 const Reviews = () => {
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-2 gap-5">
         <LayoutCard
-          title="hello"
+          title="Review Statistics"
           component={
             <>
-              <CaretSelect btnText="imhokayyyyeee" />
+              <DoubleCaretSelect
+                calender={true}
+                bg="customYellow"
+                btnText="Last 7 Days"
+              />
             </>
           }
         >
-          <RadialChartStacked />
+          <ReviewChart />
         </LayoutCard>
         <LayoutCard
-          title="hello"
+          title="Overall Rating"
           component={
             <>
-              <CaretSelect btnText="imhokayyyyeee" />
+              <CaretSelect btnText="This Week" />
             </>
           }
         >
-          <p>sorrryyyy</p>
+          <OverAllRating />
         </LayoutCard>
       </div>
-      <MoreOptionCard title="okat" />
+      <MoreOptionCard title="Reviews by Country">
+        <Maps />
+      </MoreOptionCard>
       <ReviewGrid />
     </div>
   );

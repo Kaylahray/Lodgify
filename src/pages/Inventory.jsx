@@ -1,126 +1,120 @@
-import React, { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
 import {
   useReactTable,
-  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  flexRender,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-import axios from "axios";
-import { DateTime } from "luxon"; // For date formatting
 
-// Columns for the table
+const mockInventoryData = [
+  {
+    item: "Bath Towels",
+    category: "Linen",
+    availability: "Available",
+    stock: 120,
+    reorder: 50,
+  },
+  {
+    item: "Shampoo Bottles",
+    category: "Toiletries",
+    availability: "Low",
+    stock: 20,
+    reorder: 100,
+  },
+  {
+    item: "Coffee Pods",
+    category: "Refreshments",
+    availability: "Out of Stock",
+    stock: 0,
+    reorder: 200,
+  },
+  {
+    item: "Room Key Cards",
+    category: "Electronics",
+    availability: "Available",
+    stock: 500,
+    reorder: 100,
+  },
+  {
+    item: "Cleaning Supplies",
+    category: "Housekeeping",
+    availability: "Available",
+    stock: 300,
+    reorder: 50,
+  },
+  {
+    item: "Mini Bar Snacks",
+    category: "Refreshments",
+    availability: "Low",
+    stock: 15,
+    reorder: 50,
+  },
+  // Add more items as needed...
+];
+
 const columns = [
   {
-    header: "Guest",
-    accessorKey: "guest",
-    footer: "Guest",
+    accessorKey: "item",
+    header: "Item",
   },
   {
-    header: "Room",
-    accessorKey: "room",
-    footer: "Room",
+    accessorKey: "category",
+    header: "Category",
   },
   {
-    header: "Request",
-    accessorKey: "request",
-    footer: "Request",
-  },
-  {
-    header: "Nights",
-    accessorKey: "nights",
-    footer: "Nights",
-  },
-  {
-    header: "Check In / Check Out",
-    accessorKey: "checkIn",
-    footer: "Check In / Check Out",
-    cell: (info) => {
-      const checkIn = DateTime.fromISO(
-        info.row.original.checkIn
-      ).toLocaleString(DateTime.DATE_MED);
-      const checkOut = DateTime.fromISO(
-        info.row.original.checkOut
-      ).toLocaleString(DateTime.DATE_MED);
-      return `${checkIn} - ${checkOut}`;
-    },
-  },
-  {
-    header: "Status",
-    accessorKey: "status",
-    footer: "Status",
-    cell: (info) => {
-      const status = info.getValue();
+    accessorKey: "availability",
+    header: "Availability",
+    cell: ({ getValue }) => {
+      const availability = getValue();
+      const className =
+        availability === "Available"
+          ? "bg-green-100 text-green-700"
+          : availability === "Low"
+          ? "bg-yellow-100 text-yellow-700"
+          : "bg-red-100 text-red-700";
       return (
-        <span
-          style={{
-            padding: "5px 10px",
-            backgroundColor:
-              status === "Confirmed"
-                ? "green"
-                : status === "Pending"
-                ? "yellow"
-                : "red",
-            color: "white",
-            borderRadius: "5px",
-          }}
-        >
-          {status}
+        <span className={`px-2 py-1 rounded-full ${className}`}>
+          {availability}
         </span>
       );
     },
   },
   {
-    header: "Actions",
+    accessorKey: "stock",
+    header: "Quantity In Stock",
+  },
+  {
+    accessorKey: "reorder",
+    header: "Quantity to Reorder",
+  },
+  {
     accessorKey: "actions",
-    footer: "Actions",
+    header: "Action",
     cell: () => (
       <>
-        <button
-          style={{
-            marginRight: "5px",
-            padding: "5px",
-            background: "green",
-            color: "white",
-          }}
-        >
-          Confirm
-        </button>
-        <button
-          style={{
-            padding: "5px",
-            background: "red",
-            color: "white",
-          }}
-        >
-          Cancel
-        </button>
+        <button className="text-blue-500">View Detail</button>
+        <button className="ml-2 text-green-500">Reorder</button>
       </>
     ),
   },
 ];
 
-// Mockaroo Data Fetch
-const fetchReservations = async () => {
-  const { data } = await axios.get("http://localhost:8000/data");
-  return data;
-};
-
-const Inventory = () => {
-  // Fetching data using Tanstack Query
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["reservations"],
-    queryFn: fetchReservations,
-  });
-
+const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
+  const [selectedRows, setSelectedRows] = useState({});
 
-  // Use React Table
+  const handleCheckboxChange = (rowId) => {
+    setSelectedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
+  };
+
   const table = useReactTable({
-    data,
+    data: mockInventoryData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -134,36 +128,26 @@ const Inventory = () => {
     onGlobalFilterChange: setFiltering,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
-
   return (
     <div>
       <input
-        type="text"
-        placeholder="Search"
         value={filtering}
         onChange={(e) => setFiltering(e.target.value)}
-        style={{
-          marginBottom: "10px",
-          padding: "5px",
-          width: "300px",
-        }}
+        placeholder="Search..."
+        className="mb-4 p-2 border"
       />
-
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table className="min-w-full bg-white border">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
+              <th className="p-4">
+                <input type="checkbox" />
+              </th>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-                  style={{
-                    cursor: "pointer",
-                    padding: "10px",
-                    borderBottom: "1px solid black",
-                  }}
+                  className="p-4 cursor-pointer"
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -179,18 +163,21 @@ const Inventory = () => {
             </tr>
           ))}
         </thead>
-
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              className={selectedRows[row.id] ? "bg-gray-200" : ""}
+            >
+              <td className="p-4">
+                <input
+                  type="checkbox"
+                  checked={!!selectedRows[row.id]}
+                  onChange={() => handleCheckboxChange(row.id)}
+                />
+              </td>
               {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  style={{
-                    padding: "10px",
-                    borderBottom: "1px solid black",
-                  }}
-                >
+                <td key={cell.id} className="p-4 text-left">
                   {flexRender(
                     cell.column.columnDef.cell,
                     cell.getContext()
@@ -201,44 +188,25 @@ const Inventory = () => {
           ))}
         </tbody>
       </table>
-
-      <div style={{ marginTop: "10px" }}>
-        Page {table.getState().pagination.pageIndex + 1} of{" "}
-        {table.getPageCount()}
-      </div>
-
-      <div style={{ marginTop: "10px" }}>
-        <button
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-          style={{ marginRight: "5px", padding: "5px" }}
-        >
-          First page
-        </button>
+      <div className="mt-4">
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          style={{ marginRight: "5px", padding: "5px" }}
         >
-          Previous page
+          Previous
         </button>
+        <span className="mx-4">
+          Page {table.getState().pagination.pageIndex + 1}
+        </span>
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          style={{ marginRight: "5px", padding: "5px" }}
         >
-          Next page
-        </button>
-        <button
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-          style={{ padding: "5px" }}
-        >
-          Last Page
+          Next
         </button>
       </div>
     </div>
   );
 };
 
-export default Inventory;
+export default InventoryTable;

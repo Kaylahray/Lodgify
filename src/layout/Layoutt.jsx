@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Logo,
   DashIcon,
@@ -37,7 +37,6 @@ const navigation = [
     path: "/reservation",
     icon: ReservationIcon,
   },
-
   { name: "Rooms", path: "/rooms", icon: RoomsIcon },
   { name: "Messages", path: "/messages", icon: MessagesIcon },
   {
@@ -65,34 +64,6 @@ const navigation = [
 const Layout = () => {
   const [subnav, setSubNav] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const { pathname } = useLocation();
-  // console.log(pathname);
-  const location = useLocation();
-
-  // Extract the last part of the pathname
-  const currentPath = location.pathname.split("/").slice(-1)[0];
-
-  // Define a dynamic title based on the current route
-  const dynamicTitle =
-    currentPath === "reservation"
-      ? "Reservation List"
-      : currentPath === "concierge"
-      ? "Concierge List"
-      : "Default Page";
-  // let renderHeader;
-  // useEffect(() => {
-  //   renderHeader = () => {
-  //     switch (pathname) {
-  //       case pathname === "/":
-  //         return "Dashboard";
-
-  //       case pathname === "/reservations":
-  //         return "Reservations";
-  //       default:
-  //         break;
-  //     }
-  //   };
-  // }, [pathname]);
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -190,7 +161,7 @@ const Layout = () => {
         </div>
       </div>
 
-      <div className="lg:pl-60 min-h-screen bg-customG flex flex-col justify-between">
+      <div className="lg:pl-60 bg-customG">
         {/* header */}
         <div className="sticky top-0 z-40 flex  bg-customG h-16 shrink-0 items-center gap-x-4  px-4  sm:gap-x-6 sm:px-6 lg:px-8">
           <button
@@ -205,13 +176,11 @@ const Layout = () => {
           {/* Separator */}
 
           <header className=" flex-1 flex justify-between items-center">
-            {dynamicTitle}
-            {/* {renderHeader()} */}
             hello
           </header>
         </div>
         {/* main */}
-        <main className="py-4 ">
+        <main className="py-4">
           <div className="px-4 sm:px-6 ">
             <Outlet />
           </div>

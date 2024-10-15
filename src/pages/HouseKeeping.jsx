@@ -1,151 +1,287 @@
-import React, { useState } from "react";
-import TableHeader from "../components/TableHeader";
-import { RxCaretSort } from "react-icons/rx";
-import TableBody from "../components/TableBody";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import CaretSelect from "../components/CaretSelect";
-import Button from "../components/Button";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import Paginate from "../components/Paginate";
+import CaretSelect from "../components/CaretSelect";
+import TableHeader from "../components/TableHeader";
+import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
+import TableBody from "../components/TableBody";
+import { FaEye, FaEyeSlash, FaEdit } from "react-icons/fa"; // React Icons
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+} from "@tanstack/react-table";
+import { DateTime } from "luxon";
+import CustomPagination from "../components/CustomPagination";
+
 import SecondLayoutCard from "../components/SecondLayoutCard";
 
+const mockRoomData = [
+  {
+    roomNumber: "Room 101",
+    roomType: "Deluxe",
+    housekeeping: "Cleaning in Progress",
+    priority: "High",
+    floor: "1st",
+    reservationStatus: "Checked-In",
+    notes: "Guest requested extra towels and pillows.",
+  },
+  {
+    roomNumber: "Room 102",
+    roomType: "Standard",
+    housekeeping: "Ready",
+    priority: "Low",
+    floor: "1st",
+    reservationStatus: "Reserved",
+    notes: "Ensure room is stocked with amenities.",
+  },
+  {
+    roomNumber: "Room 103",
+    roomType: "Suite",
+    housekeeping: "Needs Cleaning",
+    priority: "High",
+    floor: "2nd",
+    reservationStatus: "Checked-Out",
+    notes: "Deep clean due to extended stay.",
+  },
+  {
+    roomNumber: "Room 201",
+    roomType: "Standard",
+    housekeeping: "Cleaning in Progress",
+    priority: "Medium",
+    floor: "2nd",
+    reservationStatus: "Checked-In",
+    notes: "Guest requested fresh linens.",
+  },
+  {
+    roomNumber: "Room 202",
+    roomType: "Standard",
+    housekeeping: "Needs Cleaning",
+    priority: "Medium",
+    floor: "2nd",
+    reservationStatus: "Checked-Out",
+    notes: "Ensure bathroom amenities are replenished.",
+  },
+  {
+    roomNumber: "Room 203",
+    roomType: "Deluxe",
+    housekeeping: "Ready",
+    priority: "Low",
+    floor: "2nd",
+    reservationStatus: "Reserved",
+    notes: "Check minibar supplies and restock if necessary.",
+  },
+  // Add more rooms...
+];
+
 const HouseKeeping = () => {
-  const fetchTableData = (pageId) => {
-    return axios.get(
-      `http://localhost:8000/data?_limit=10&_page=${pageId}`
-    );
+  const [sorting, setSorting] = useState([]);
+  const [filtering, setFiltering] = useState("");
+  const [selectedRows, setSelectedRows] = useState({});
+  const [housekeepingStatuses, setHousekeepingStatuses] = useState(
+    mockRoomData.map((room) => room.housekeeping)
+  );
+  const handleCheckboxChange = (rowId) => {
+    setSelectedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
   };
-  const [page, setPage] = useState(1);
-  const { isLoading, data } = useQuery({
-    queryKey: ["inventory", page],
-    queryFn: () => fetchTableData(page),
-    placeholderData: keepPreviousData,
+
+  const handleHousekeepingChange = (index, value) => {
+    const updatedStatuses = [...housekeepingStatuses];
+    updatedStatuses[index] = value;
+    setHousekeepingStatuses(updatedStatuses);
+  };
+
+  // Define columns here, so `housekeepingStatuses` is accessible
+  const columns = [
+    {
+      accessorKey: "roomNumber",
+      header: "Room Number",
+    },
+    {
+      accessorKey: "roomType",
+      header: "Room Type",
+      cell: ({ getValue }) => (
+        <span className="font-semibold">{getValue()}</span>
+      ),
+    },
+    {
+      accessorKey: "housekeeping",
+      header: "Housekeeping Status",
+      cell: ({ row, getValue }) => {
+        const housekeeping = getValue();
+        const index = row.index;
+        const className =
+          housekeeping === "Ready"
+            ? "bg-green-100 text-green-700"
+            : housekeeping === "Needs Cleaning"
+            ? "bg-red-100 text-red-700"
+            : housekeeping === "Cleaning in Progress"
+            ? "bg-yellow-100 text-yellow-700"
+            : "";
+
+        return (
+          <div
+            className={`flex items-center gap-2 px-2 py-1 bg-yellow-800 rounded-full ${className}`}
+          >
+            {/* Existing badge display */}
+            <span className="font-semibold">{housekeeping}</span>
+            {/* Housekeeping status dropdown */}
+            <select
+              value={housekeepingStatuses[index]}
+              onChange={(e) =>
+                handleHousekeepingChange(index, e.target.value)
+              }
+              className="bg-transparent p-1 rounded-md"
+            >
+              <option value="Ready">Ready</option>
+              <option value="Needs Cleaning">Needs Cleaning</option>
+              <option value="Cleaning in Progress">
+                Cleaning in Progress
+              </option>
+            </select>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "priority",
+      header: "Priority",
+      cell: ({ getValue }) => {
+        const priority = getValue();
+        const className =
+          priority === "High"
+            ? "text-red-700"
+            : priority === "Medium"
+            ? "text-yellow-700"
+            : "text-green-700";
+        return (
+          <span className={`font-semibold ${className}`}>
+            {priority}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "floor",
+      header: "Floor",
+    },
+    {
+      accessorKey: "reservationStatus",
+      header: "Reservation Status",
+    },
+    {
+      accessorKey: "notes",
+      header: "Notes",
+    },
+  ];
+
+  const table = useReactTable({
+    data: mockRoomData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting: sorting,
+      globalFilter: filtering,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setFiltering,
   });
 
-  if (isLoading) {
-    return <h1>loading</h1>;
-  }
   return (
-    <>
-      <SecondLayoutCard
-        search={<SearchBar />}
-        component={
-          <>
-            <CaretSelect btnText="one" />
-            <CaretSelect btnText="two" />
-            <Button btnText="soon" />
-          </>
-        }
-      >
-        <table className="table w-full border-separate border-spacing-y-2 text-tableTextColor">
+    <SecondLayoutCard
+      search={
+        <SearchBar
+          placeholder="Search guest, status, etc"
+          value={filtering}
+          onChange={(e) => setFiltering(e.target.value)}
+        />
+      }
+      component={
+        <>
+          <CaretSelect btnText="All Room" />
+          <CaretSelect btnText="All Status" />
+          <CaretSelect btnText="All Priority" />
+        </>
+      }
+    >
+      <div className="min-h-[80vh] flex flex-col justify-between">
+        <table className="w-full">
           <TableHeader>
-            <th>
-              <span className="pr-1">Item</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1"> Category</span>
-
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Availability</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Quantity in Stock</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Quantity in reorder</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
-            <th>
-              <span className="pr-1">Action</span>
-              <RxCaretSort className="inline text-sm" />
-            </th>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr
+                key={headerGroup.id}
+                className="rounded-2xl overflow-hidden"
+              >
+                <th className="p-4">
+                  <input type="checkbox" />
+                </th>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className="p-4 cursor-pointer text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
+                  >
+                    <div className="flex items-center gap-2">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      <span>
+                        {header.column.getIsSorted() === "asc" ? (
+                          <RxCaretUp />
+                        ) : header.column.getIsSorted() === "desc" ? (
+                          <RxCaretDown />
+                        ) : (
+                          <RxCaretSort />
+                        )}
+                      </span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
           </TableHeader>
           <TableBody>
-            {data?.data.map((tableitem) => {
-              const {
-                item,
-                category,
-                availability,
-                quantity_in_stock,
-                quantity_in_reorder,
-                actions,
-              } = tableitem;
-              return (
-                <tr key={item.name}>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className={`${
+                  selectedRows[row.id] ? "bg-gray-200" : ""
+                }`}
+              >
+                <td className="p-4">
+                  <input
+                    type="checkbox"
+                    checked={!!selectedRows[row.id]}
+                    onChange={() => handleCheckboxChange(row.id)}
+                  />
+                </td>
+                {row.getVisibleCells().map((cell) => (
                   <td
-                    scope="col"
-                    className="relative px-7 py-6 sm:w-12 sm:px-6 rounded-tr-none rounded-t-lg"
+                    key={cell.id}
+                    className="text-customBlack p-5 text-[12px] font-normal leading-[1.4]"
                   >
-                    <input
-                      type="checkbox"
-                      className={`absolute left-4 top-1/2 -mt-2 h-4 w-4  rounded border-[#8F8F8F] text-indigo-600 focus:ring-indigo-600 `}
-                    />
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
                   </td>
-
-                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                    <div className="flex items-center">
-                      <div className="h-11 w-11 flex-shrink-0">
-                        <img
-                          alt=""
-                          className="h-11 w-11 rounded-full"
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <div className="font-medium text-gray-900">
-                          {item.name}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <div className="text-gray-900">{category}</div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <span
-                      className={`inline-flex items-center rounded-sm px-2 py-1 text-xs font-medium
-                    ${
-                      availability === "Available"
-                        ? "bg-[#F3FBC7]"
-                        : availability === "Low"
-                        ? "bg-[#D5F6E5]"
-                        : "bg-[#FEE]"
-                    }`}
-                    >
-                      {availability}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    {quantity_in_stock}
-                  </td>
-                  <td className="whitespace-nowrap py-5 pl-3 pr-4 text-sm font-medium sm:pr-0">
-                    {quantity_in_reorder}
-                  </td>
-                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                    <div className="flex items-center">
-                      <div>
-                        <span className="inline-flex items-center rounded-md bg-green-50  text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                          {actions.view_detail}
-                        </span>
-                      </div>
-                      <div className="ml-2 font-medium text-gray-900">
-                        {actions.reorder}
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+                ))}
+              </tr>
+            ))}
           </TableBody>
         </table>
-        <Paginate page={page} setPage={setPage} />
-      </SecondLayoutCard>
-    </>
+      </div>
+      <CustomPagination table={table} />
+    </SecondLayoutCard>
   );
 };
 

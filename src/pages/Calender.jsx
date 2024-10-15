@@ -1,11 +1,8 @@
-import React from "react";
-import GuestProfile from "../features/reservation/GuestProfile";
+// import React from "react";
+import Calendar from "../features/calender/Calendar";
+
 const Calender = () => {
-  return (
-    <div>
-      <GuestProfile />
-    </div>
-  );
-};
+  return <Calendar />;
+}; 
 
 export default Calender;

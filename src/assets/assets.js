@@ -30,12 +30,35 @@ import Youtube from "./Youtube.svg";
 import Bed from "./Bed.svg";
 import Guest from "./Guest.svg";
 import Size from "./Size.svg";
+import RoomCheck from "./RoomCheck.svg";
+import Coffee from "./Coffee.svg";
+import SnowFlake from "./SnowFlake.svg";
+import Wifi from "./Wifi.svg";
+import Monitor from "./Monitor.svg";
+import Vault from "./Vault.svg";
+import Wind from "./Wind.svg";
+import Stroke from "./Stroke.svg";
+import Phone from "./Phone.svg";
+import Medal from "./Medal.svg";
+
+import EnvelopeOpen from "./EnvelopeOpen.svg";
 
 export {
   Logo,
   Facebook,
+  Medal,
+  Phone,
+  EnvelopeOpen,
+  RoomCheck,
+  Coffee,
+  Wifi,
+  Wind,
+  Monitor,
+  Vault,
+  SnowFlake,
   Instagram,
   Size,
+  Stroke,
   Guest,
   Bed,
   Linkedin,

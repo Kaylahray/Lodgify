@@ -5,6 +5,9 @@
 .active {
   background-color: green;
 }
+* {
+  font-size: 14px;
+}
 /* In your global CSS or style file */
 .hide-scrollbar {
   scrollbar-width: none; /* For Firefox */

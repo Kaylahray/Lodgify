@@ -7,15 +7,21 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "serve-json": "json-server --watch db.json --port 8000"
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.10.7",
+    "@amcharts/amcharts5-geodata": "^5.1.4",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",
     "@tanstack/react-query": "^5.59.0",
     "@tanstack/react-table": "^8.20.5",
     "axios": "^1.7.7",
+    "chart.js": "^4.4.4",
     "json-server": "^0.17.4",
     "lucide-react": "^0.451.0",
     "luxon": "^3.5.0",
