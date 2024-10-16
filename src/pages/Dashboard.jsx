@@ -60,7 +60,7 @@ const Dashboard = () => {
               </>
             }
           >
-            <p>sorrryyyy</p>
+            <p>Hello from this side</p>
           </LayoutCard>
         </div>
 
