@@ -1,73 +1,54 @@
-import React from "react";
-import { BarChart, Bar, XAxis, ResponsiveContainer } from "recharts";
+import { useEffect, useState } from "react";
 
-// Sample data
-const reviews = [
-  { category: "Facilities", score: 4.4 },
-  { category: "Cleanliness", score: 4.7 },
-  { category: "Services", score: 4.6 },
-  { category: "Comfort", score: 4.8 },
-  { category: "Location", score: 4.5 },
+const ratings = [
+  { category: "Facilities", rating: 4.4 },
+  { category: "Cleanliness", rating: 4.4 },
+  { category: "Services", rating: 4.6 },
+  { category: "Comfort", rating: 4.8 },
+  { category: "Food and Dining", rating: 4.5 },
 ];
 
-// Compute total and average using reduce
-const totalScore = reviews.reduce(
-  (acc, review) => acc + (review.score || 0),
-  0
-); // Ensure no undefined values
-const overallRating = (totalScore / reviews.length).toFixed(1);
-const totalReviews = 2546; // Example static value
+const AnimatedProgressBar = ({ rating }) => {
+  const [width, setWidth] = useState(0);
 
-const RatingChart = () => {
+  useEffect(() => {
+    // Animate the width after a slight delay
+    setTimeout(() => {
+      setWidth((rating / 5) * 100); // Convert rating (out of 5) to percentage
+    }, 300);
+  }, [rating]);
+
   return (
-    <div>
-      {/* Overall Rating Section */}
-      <div className="flex items-center mb-4">
-        <div className="bg-green-100 text-green-600 p-2 rounded-lg mr-2">
-          <span className="text-2xl font-bold">{overallRating}</span>
-          <span className="text-sm">/5</span>
-        </div>
-        <div>
-          <h2 className="font-bold text-lg">Impressive</h2>
-          <p className="text-xs text-gray-500">
-            from {totalReviews} reviews
-          </p>
-        </div>
-      </div>
-
-      {/* Ratings per category */}
-      <div className="space-y-2">
-        {reviews.map((review, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between"
-          >
-            <span className="text-sm">{review.category}</span>
-            <ResponsiveContainer width="60%" height={8}>
-              <BarChart
-                data={reviews}
-                // Ensure no NaN by using a fallback value
-                barSize={6}
-                layout="vertical"
-              >
-                <XAxis
-                  type="number"
-                  domain={[0, 5]} // Fixed domain to avoid issues
-                  hide
-                />
-                <Bar
-                  dataKey="score"
-                  fill="#FCE482"
-                  radius={[10, 10, 10, 10]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-            <span className="ml-2 text-sm">{review.score}</span>
-          </div>
-        ))}
+    <div className="w-full bg-gray-400 h-2 rounded-full relative overflow-hidden">
+      <div
+        className="h-full bg-green-200 rounded-full transition-all duration-1000 ease-out"
+        style={{ width: `${width}%` }}
+      >
+        {/* Optional animated overlay */}
+        {/* <div className="h-full bg-green-300 opacity-70 w-full absolute left-0 animate-progress"></div> */}
       </div>
     </div>
   );
 };
+const ProgressBar = () => {
+  return (
+    <div className="w-full mt-6">
+      {ratings.map((item) => (
+        <div
+          key={item.category}
+          className="flex flex-col items-start gap-1"
+        >
+          <p className="text-sm">{item.category}</p>
+          <div className=" flex items-center gap-2 w-full">
+            <AnimatedProgressBar rating={item.rating} />
+            <span className="text-sm font-semibold">
+              {item.rating}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-export default RatingChart;
+export default ProgressBar;

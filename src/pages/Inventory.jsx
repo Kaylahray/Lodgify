@@ -1,105 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   useReactTable,
+  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  flexRender,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-
-const mockInventoryData = [
-  {
-    item: "Bath Towels",
-    category: "Linen",
-    availability: "Available",
-    stock: 120,
-    reorder: 50,
-  },
-  {
-    item: "Shampoo Bottles",
-    category: "Toiletries",
-    availability: "Low",
-    stock: 20,
-    reorder: 100,
-  },
-  {
-    item: "Coffee Pods",
-    category: "Refreshments",
-    availability: "Out of Stock",
-    stock: 0,
-    reorder: 200,
-  },
-  {
-    item: "Room Key Cards",
-    category: "Electronics",
-    availability: "Available",
-    stock: 500,
-    reorder: 100,
-  },
-  {
-    item: "Cleaning Supplies",
-    category: "Housekeeping",
-    availability: "Available",
-    stock: 300,
-    reorder: 50,
-  },
-  {
-    item: "Mini Bar Snacks",
-    category: "Refreshments",
-    availability: "Low",
-    stock: 15,
-    reorder: 50,
-  },
-  // Add more items as needed...
-];
-
-const columns = [
-  {
-    accessorKey: "item",
-    header: "Item",
-  },
-  {
-    accessorKey: "category",
-    header: "Category",
-  },
-  {
-    accessorKey: "availability",
-    header: "Availability",
-    cell: ({ getValue }) => {
-      const availability = getValue();
-      const className =
-        availability === "Available"
-          ? "bg-green-100 text-green-700"
-          : availability === "Low"
-          ? "bg-yellow-100 text-yellow-700"
-          : "bg-red-100 text-red-700";
-      return (
-        <span className={`px-2 py-1 rounded-full ${className}`}>
-          {availability}
-        </span>
-      );
-    },
-  },
-  {
-    accessorKey: "stock",
-    header: "Quantity In Stock",
-  },
-  {
-    accessorKey: "reorder",
-    header: "Quantity to Reorder",
-  },
-  {
-    accessorKey: "actions",
-    header: "Action",
-    cell: () => (
-      <>
-        <button className="text-blue-500">View Detail</button>
-        <button className="ml-2 text-green-500">Reorder</button>
-      </>
-    ),
-  },
-];
+import { mockInventoryData } from "../features/inventory/MockData";
+import CustomPagination from "../components/CustomPagination";
+import TableHeader from "../components/TableHeader";
+import TableBody from "../components/TableBody";
+import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
 
 const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
@@ -112,6 +24,72 @@ const InventoryTable = () => {
       [rowId]: !prev[rowId],
     }));
   };
+
+  const columns = [
+    {
+      accessorKey: "itemName",
+      header: "Item",
+      cell: ({ row }) => {
+        const { imageUrl, itemName } = row.original; // Assuming your mock data includes both imageUrl and itemName in one object
+        return (
+          <div className="flex items-center gap-2">
+            <img
+              src={imageUrl}
+              alt={itemName}
+              className="h-12 w-12 object-cover"
+            />
+            <span className="font-semibold">{itemName}</span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
+    },
+    {
+      accessorKey: "availability",
+      header: "Availability",
+      cell: ({ getValue }) => {
+        const availability = getValue();
+        const availabilityClass =
+          availability === "Available"
+            ? "bg-green-100 text-green-700"
+            : availability === "Low"
+            ? "bg-yellow-100 text-yellow-700"
+            : "bg-red-100 text-red-700";
+        return (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${availabilityClass}`}
+          >
+            {availability}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "quantityInStock",
+      header: "Quantity in Stock",
+    },
+    {
+      accessorKey: "quantityInReorder",
+      header: "Quantity in Reorder",
+    },
+    {
+      accessorKey: "action",
+      header: "Action",
+      cell: () => (
+        <div className="flex gap-2">
+          <button className="bg-gray-100 px-4 py-1 rounded-md text-xs">
+            View Detail
+          </button>
+          <button className="bg-green-100 text-green-700 px-4 py-1 rounded-md text-xs">
+            Reorder
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   const table = useReactTable({
     data: mockInventoryData,
@@ -129,17 +107,14 @@ const InventoryTable = () => {
   });
 
   return (
-    <div>
-      <input
-        value={filtering}
-        onChange={(e) => setFiltering(e.target.value)}
-        placeholder="Search..."
-        className="mb-4 p-2 border"
-      />
-      <table className="min-w-full bg-white border">
-        <thead>
+    <div className="min-h-[80vh] flex flex-col justify-between">
+      <table className="w-full">
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <tr
+              key={headerGroup.id}
+              className="rounded-2xl overflow-hidden"
+            >
               <th className="p-4">
                 <input type="checkbox" />
               </th>
@@ -147,27 +122,35 @@ const InventoryTable = () => {
                 <th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-                  className="p-4 cursor-pointer"
+                  className="p-4 cursor-pointer text-nowrap text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
                 >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {header.column.getIsSorted() === "asc"
-                    ? " 🔼"
-                    : header.column.getIsSorted() === "desc"
-                    ? " 🔽"
-                    : null}
+                  <div className="flex items-center gap-2">
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    <span>
+                      {header.column.getIsSorted() === "asc" ? (
+                        <RxCaretUp />
+                      ) : header.column.getIsSorted() === "desc" ? (
+                        <RxCaretDown />
+                      ) : (
+                        <RxCaretSort />
+                      )}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
           ))}
-        </thead>
-        <tbody>
+        </TableHeader>
+        <TableBody>
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className={selectedRows[row.id] ? "bg-gray-200" : ""}
+              className={` border-b border-b-[#E7E7E7] ${
+                selectedRows[row.id] ? "bg-gray-200" : ""
+              }`}
             >
               <td className="p-4">
                 <input
@@ -177,7 +160,10 @@ const InventoryTable = () => {
                 />
               </td>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4 text-left">
+                <td
+                  key={cell.id}
+                  className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
+                >
                   {flexRender(
                     cell.column.columnDef.cell,
                     cell.getContext()
@@ -186,25 +172,9 @@ const InventoryTable = () => {
               ))}
             </tr>
           ))}
-        </tbody>
+        </TableBody>
       </table>
-      <div className="mt-4">
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </button>
-        <span className="mx-4">
-          Page {table.getState().pagination.pageIndex + 1}
-        </span>
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </button>
-      </div>
+      <CustomPagination table={table} />
     </div>
   );
 };

@@ -37,7 +37,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 export const ChartRevenue = () => {
   return (
     <div className="text-sm p-2 w-full">
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={150}>
         <AreaChart data={data}>
           <defs>
             <linearGradient
@@ -65,14 +65,21 @@ export const ChartRevenue = () => {
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} strokeDasharray="8 8" />
-          <XAxis dataKey="month" tickLine={false} />
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            axisLine={false}
+            padding={{ left: 10, right: 10 }}
+          />
           <YAxis
             tickLine={false}
+            axisLine={false}
             tickFormatter={(value) =>
               `$${(value / 1000).toLocaleString()}K`
             }
             domain={[0, 400000]} // Set Y-axis range
             interval={0}
+            padding={{ left: 10, right: 20 }}
           />
           <Tooltip content={<CustomTooltip />} cursor={false} />
           {data.map((entry, index) => (
@@ -92,15 +99,15 @@ export const ChartRevenue = () => {
             stroke="#e7f68e"
             fillOpacity={1}
             fill="url(#colorRevenue)"
-            strokeWidth={4}
+            strokeWidth={2}
             dot={{
-              r: 8,
+              r: 4,
               fill: "#fff",
               stroke: "#e7f68e",
               strokeWidth: 4,
             }}
             activeDot={{
-              r: 10,
+              r: 4,
               fill: "#e7f68e",
               stroke: "#fff",
               strokeWidth: 2,

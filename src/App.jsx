@@ -21,6 +21,7 @@ import {
 import { LodgifyProvider } from "./hooks/usePage";
 import Expense from "./pages/Expense";
 import GuestProfile from "./features/reservation/GuestProfile";
+import InvoiceTable from "./pages/Invoice";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
         path: "financials",
         element: <Financials />,
         children: [
-          { path: "invoice", element: <Calender /> },
+          { path: "invoice", element: <InvoiceTable /> },
           { path: "expense", element: <Expense /> },
         ],
       },

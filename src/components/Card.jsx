@@ -15,7 +15,7 @@ const Card = ({
       className={`flex flex-col items-start gap-6 p-4 flex-grow  rounded-xl
     ${color === "customBlue" ? "bg-customBlue" : "bg-white"}`}
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between w-full items-start">
         <div className="flex flex-col items-start gap-0.5 w-[118px]">
           <h1 className="text-[11px] font-normal leading-[1.4] text-customGray">
             {title}

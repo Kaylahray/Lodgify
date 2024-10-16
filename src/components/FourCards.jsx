@@ -52,7 +52,7 @@ const cardData = [
 ];
 const FourCards = () => {
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 ">
+    <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 ">
       {cardData.map((item) => {
         console.log({ ...item });
         return <Card {...item} key={item.title} />;

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import { useRef } from "react";

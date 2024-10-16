@@ -2,7 +2,7 @@ import React from "react";
 const LayoutCard = ({ title, children, component }) => {
   return (
     <div className="flex p-4 flex-col items-start gap-4 rounded-xl bg-white ">
-      <div className=" lg:flex-row flex items-center justify-between w-full flex-col gap-2 ">
+      <div className=" sm:flex-row flex items-start justify-between w-full flex-col gap-2 ">
         <p className="text-[16px] font-medium leading-[125%] text-customBlack">
           {title}
         </p>

@@ -193,7 +193,7 @@ const Layout = () => {
         </div>
       </div>
 
-      <div className="lg:pl-60 min-h-screen bg-customG flex flex-col justify-between">
+      <div className="xl:pl-56 lg:pl-52 min-h-screen bg-customG flex flex-col justify-between">
         {/* header */}
         <div className="sticky top-0 z-40 flex  bg-customG h-16 shrink-0 items-center gap-x-4  px-4  sm:gap-x-6 sm:px-6 lg:px-8">
           <button
@@ -207,13 +207,13 @@ const Layout = () => {
 
           {/* Separator */}
 
-          <header className=" flex-1 flex justify-between items-center">
-            <p className="text-[24px] font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
+          <header className=" flex-1 flex py-2 justify-between items-center">
+            <p className="lg:text-[24px] text-lg font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
               {dynamicTitle}
             </p>
             <div className="flex-1 gap-4 flex justify-end">
               {currentPath === "/" && (
-                <div className="flex-1 gap-4 flex justify-end">
+                <div className="flex-1 hidden gap-4 lg:flex justify-end">
                   <SearchBar
                     bg="white"
                     placeholder="Search rooms, guests, books, e.t.c"
@@ -223,7 +223,7 @@ const Layout = () => {
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center">
                   <Profile />
-                  <div className="flex pb-1 flex-col">
+                  <div className="lg:flex pb-1 flex-col hidden">
                     <p className="text-[14px] font-bold text-nowrap leading-[140%] text-[#0D0E0D]">
                       Jaylon Dorwart
                     </p>
