@@ -7,7 +7,7 @@ export default {
         layout: "200px 1fr",
       },
       fontFamily: {
-        sans: ["Lato", "sans-serif"],
+        idiot: ["Lato", "sans-serif"],
         fig: ["Figtree", "sans-serif"],
       },
       colors: {

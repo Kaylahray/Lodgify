@@ -33,6 +33,7 @@ import {
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
+import { messages } from "../features/Chat/messages";
 
 const navigation = [
   { name: "Dashboard", path: "/", icon: DashIcon },
@@ -87,6 +88,7 @@ const Layout = () => {
       invoice: "Invoice",
       expense: "Expenses",
       calendar: "Calendar",
+      messages: "Messages",
     };
 
     // Map path segments to dynamic title (i.e., for breadcrumb)

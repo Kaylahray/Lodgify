@@ -36,7 +36,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export const ChartRevenue = () => {
   return (
-    <div className="text-sm p-2 w-full">
+    <div className="text-[10px] p-2 w-full">
       <ResponsiveContainer width="100%" height={150}>
         <AreaChart data={data}>
           <defs>

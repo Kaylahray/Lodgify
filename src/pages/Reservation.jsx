@@ -152,7 +152,7 @@ const Reservation = () => {
       <LayoutCard
         title="Reservation List"
         component={
-          <div className="flex lg:flex-row items-start flex-col">
+          <div className="flex lg:flex-row gap-2 items-start flex-col">
             <SearchBar
               placeholder="Search guest, status, etc"
               value={filtering}

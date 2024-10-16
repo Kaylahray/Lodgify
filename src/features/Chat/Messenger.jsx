@@ -76,7 +76,7 @@ export const Messenger = () => {
               <FaEllipsisH size={10} />
             </button>
           </div>
-          <div className="max-h-[70vh] overflow-y-auto">
+          <div className="max-h-[70vh] overflow-y-auto hide-scrollbar">
             <div className="flex justify-center w-full pt-5">
               <div className="px-2 text-sm text-center text-gray-400 bg-white rounded-md w-fit">
                 Today, June 19

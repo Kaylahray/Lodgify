@@ -104,7 +104,7 @@ export const ChartBooking = ({ className = "" }) => {
                     <span className="mr-2 font-bold text-gray-800">
                       {percentage}%
                     </span>
-                    <span className="text-gray-500">
+                    <span className="text-gray-500 text-nowrap">
                       {entry.platform}
                     </span>
                   </div>

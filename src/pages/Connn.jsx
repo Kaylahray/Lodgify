@@ -1,7 +1,8 @@
-import { faker } from "@faker-js/faker";
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import CaretSelect from "../components/CaretSelect";
+import DoubleCaretSelect from "../components/DoubleCaretSelect";
+import Button from "../components/Button";
+import LayoutCard from "../components/LayoutCard";
 import TableHeader from "../components/TableHeader";
 import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
 import TableBody from "../components/TableBody";
@@ -16,198 +17,228 @@ import {
 } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import CustomPagination from "../components/CustomPagination";
+import { useReservation } from "../hooks/usePage";
+import { NavLink } from "react-router-dom";
 
-import SecondLayoutCard from "../components/SecondLayoutCard";
-import { SearchTwo, Faders } from "../assets/assets";
-import Button from "../components/Button";
+const columns = [
+  {
+    header: "Guest",
+    accessorKey: "guest",
+    footer: "Guest",
+  },
+  {
+    header: "Room",
+    accessorKey: "room",
+    footer: "Room",
+  },
+  {
+    header: "Request ",
+    accessorKey: "request",
+    footer: "Request",
+  },
+  {
+    header: "Nights",
+    accessorKey: "duration",
+    footer: "Nights",
+  },
+  {
+    header: "Check In / Check Out",
+    accessorKey: "check-in", // Make sure this matches the property name
+    footer: "Check In / Check Out",
+    cell: (info) => {
+      const checkInDate = DateTime.fromISO(
+        info.row.original["check-in"]
+      ); // Use the correct property name
+      const checkOutDate = checkInDate.plus({
+        days: parseInt(info.row.original.duration), // Ensure duration is a number
+      });
+      const formattedCheckIn = checkInDate.toLocaleString(
+        DateTime.DATE_MED
+      );
+      const formattedCheckOut = checkOutDate.toLocaleString(
+        DateTime.DATE_MED
+      );
 
-const mockRoomData = Array.from({ length: 20 }, () => ({
-  name: faker.person.fullName(), // Use faker.person.fullName() for names
-  id: faker.string.sample(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), // Use faker.string.sample() for alphanumeric ID
-  position: faker.helpers.arrayElement([
-    "Concierge",
-    "Head Concierge",
-  ]),
-  schedule: `${faker.date.weekday()} - ${faker.date.weekday()}\n${faker.helpers.arrayElement(
-    [8, 12]
-  )} ${faker.helpers.arrayElement([
-    "AM",
-    "PM",
-  ])} - ${faker.helpers.arrayElement([
-    4, 8,
-  ])} ${faker.helpers.arrayElement(["AM", "PM"])}`, // Fake schedule
-  contact: faker.phone.number("+1 (###) ###-####"), // Use faker.phone.number() for phone numbers
-  email: faker.internet.email(), // Use faker.internet.email() for emails
-  status: faker.helpers.arrayElement(["Active", "Inactive"]),
-  avatar: faker.image.avatar(), // Use faker.image.avatar() for avatars
-}));
+      return `${formattedCheckIn} - ${formattedCheckOut}`;
+    },
+  },
 
-const Concierge = () => {
+  {
+    header: "Status",
+    accessorKey: "status",
+    footer: "Status",
+    cell: (info) => {
+      const status = info.getValue();
+      return (
+        <span
+          className={`
+           
+              ${
+                status === "Confirmed"
+                  ? " px-[6px] py-[2px] pb-[3px] rounded-[4px] bg-[#D5F6E5]"
+                  : status === "Pending"
+                  ? " px-[6px] py-[2px] pb-[3px] rounded-[4px] bg-[#FEE]"
+                  : "bg-white"
+              }          
+         `}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "action",
+    header: "Action",
+    cell: ({ row }) => {
+      const action = row.getValue("action");
+      return (
+        <div className="flex gap-2">
+          <div className="flex rounded-md gap-1 items-center bg-[#f8f8f8] text-lightGray">
+            <button className="p-1.5">
+              <FaEye />
+            </button>
+            <button className="p-1.5">
+              <FaEdit />
+            </button>
+          </div>
+
+          <span
+            className={`
+              ${
+                action === "Cancel"
+                  ? " px-3 py-1.5 rounded-[4px] bg-[#FEE]"
+                  : action === "Confirm"
+                  ? " px-[6px] py-[2px] pb-[3px] rounded-[4px] bg-[#E7F68E]"
+                  : "bg-white"
+              }          
+         `}
+          >
+            {action}
+          </span>
+        </div>
+      );
+    },
+  },
+];
+
+const Reservation = () => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
-  const columns = [
-    {
-      header: "Name",
-      accessorKey: "name",
-      cell: (info) => {
-        const { name, id, avatar } = info.row.original;
-        return (
-          <div className="flex items-center gap-2">
-            <img
-              src={avatar} // Use generated faker avatar here
-              alt={name}
-              className="w-8 h-8 rounded-full"
-            />
-            <div>
-              <div>{name}</div>
-              <div className="text-xs text-gray-500">{id}</div>
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      header: "Position",
-      accessorKey: "position",
-    },
-    {
-      header: "Schedule",
-      accessorKey: "schedule",
-      cell: (info) => {
-        const schedule = info.getValue().split("\n");
-        return (
-          <div className="flex flex-col">
-            <span>{schedule[0]}</span>
-            <span className="text-gray-500 text-sm">
-              {schedule[1]}
-            </span>
-          </div>
-        );
-      },
-    },
-    {
-      header: "Contact",
-      accessorKey: "contact",
-    },
-    {
-      header: "Email",
-      accessorKey: "email",
-      cell: (info) => {
-        return (
-          <a
-            href={`mailto:${info.getValue()}`}
-            className="text-blue-500"
-          >
-            {info.getValue()}
-          </a>
-        );
-      },
-    },
-    {
-      header: "Status",
-      accessorKey: "status",
-      cell: (info) => {
-        const status = info.getValue();
-        const statusClass =
-          status === "Active"
-            ? "bg-green-100 text-green-700"
-            : "bg-red-100 text-red-700";
-        return (
-          <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${statusClass}`}
-          >
-            {status}
-          </span>
-        );
-      },
-    },
-  ];
+  const { data, isLoading, error } = useReservation();
+
+  // Access reservations from the fetched data
+  const reservationData = data?.[0]?.reservations || [];
 
   const table = useReactTable({
-    data: mockRoomData,
+    data: reservationData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting: sorting,
+      globalFilter: filtering,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setFiltering,
   });
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
   return (
-    <SecondLayoutCard
-      reverse={true}
-      extra1={
-        <div className="p-2 rounded-md bg-[#F8F8F8)]">
-          <SearchTwo />
+    <>
+      <LayoutCard
+        title="Reservation List"
+        component={
+          <div className="flex lg:flex-row gap-2 items-start flex-col">
+            <SearchBar
+              placeholder="Search guest, status, etc"
+              value={filtering}
+              onChange={(e) => setFiltering(e.target.value)}
+            />
+
+            <DoubleCaretSelect
+              btnText="All Status"
+              funnel={true}
+              bg="customG"
+            />
+            <DoubleCaretSelect
+              btnText="19 - 24 June, 2028"
+              calender={true}
+              bg="customG"
+            />
+            <Button btnText="Add Booking" />
+          </div>
+        }
+      >
+        <div className="min-h-[80vh] flex flex-col justify-between ">
+          <table className="w-full ">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="rounded-2xl overflow-hidden"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="p-4 cursor-pointer text-[#6E6E6E] text-nowrap text-[11px] font-normal leading-[1.4]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        <span>
+                          {header.column.getIsSorted() === "asc" ? (
+                            <RxCaretUp />
+                          ) : header.column.getIsSorted() ===
+                            "desc" ? (
+                            <RxCaretDown />
+                          ) : (
+                            <RxCaretSort />
+                          )}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-b-[#E7E7E7]"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
+                    >
+                      <NavLink
+                        to={`/reservation/guest-profile/${row.original.id}`} // assuming guestId exists in your data
+                        className="flex w-full"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </NavLink>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </TableBody>
+          </table>
         </div>
-      }
-      extra2={
-        <div className="p-2 rounded-md bg-[#F8F8F8)]">
-          <Faders />
-        </div>
-      }
-      extra3={<Button btnText="Add Concierge" />}
-      search={
-        <SearchBar
-          placeholder="Search guest, status, etc"
-          value={filtering}
-          onChange={(e) => setFiltering(e.target.value)}
-        />
-      }
-      component={
-        <>
-          <CaretSelect btnText="All Room" bg="customG" />
-          <CaretSelect btnText="All Status" bg="customG" />
-          <CaretSelect btnText="All Priority" bg="customG" />
-        </>
-      }
-    >
-      <div className="min-h-[80vh] flex flex-col justify-between">
-        <table className="w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr
-                key={headerGroup.id}
-                className="rounded-2xl overflow-hidden"
-              >
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className="p-4 cursor-pointer text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
-                  >
-                    <div className="flex items-center gap-2">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="text-customBlack p-5 text-[12px]"
-                  >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      </LayoutCard>
       <CustomPagination table={table} />
-    </SecondLayoutCard>
+    </>
   );
 };
 
-export default Concierge;
+export default Reservation;
