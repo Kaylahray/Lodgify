@@ -18,10 +18,10 @@ import { ChartReservations } from "../features/dashboard/ChartReservation";
 const Dashboard = () => {
   return (
     <>
-      <div className="text-3xl grid grid-cols-[2.65fr_1fr] gap-4">
+      <div className="text-3xl grid grid-cols-2 xl:grid-cols-[2.65fr_1fr] gap-4">
         <div className="flex flex-col gap-5">
           <FourCards />
-          <div className="grid grid-cols-[1fr_2fr] gap-5">
+          <div className="grid xl:grid-cols-[1fr_2fr] gap-5">
             <MoreOptionCard title="Room Availability">
               <LinearBar />
             </MoreOptionCard>
@@ -36,7 +36,7 @@ const Dashboard = () => {
               <ChartRevenue />
             </LayoutCard>
           </div>
-          <div className="grid grid-cols-[1fr_1fr] gap-5">
+          <div className="grid xl:grid-cols-[1fr_1fr] gap-5">
             <LayoutCard
               title="Reservation"
               component={

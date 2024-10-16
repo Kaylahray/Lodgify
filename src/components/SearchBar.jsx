@@ -1,8 +1,15 @@
 import React from "react";
 import { Search } from "../assets/assets";
-const SearchBar = ({ placeholder = "Search", value, onChange }) => {
+const SearchBar = ({
+  placeholder = "Search",
+  value,
+  onChange,
+  bg = "customG",
+}) => {
   return (
-    <div className="flex w-full max-w-[223px] px-2 items-center gap-[6px] rounded-md bg-customG">
+    <div
+      className={`flex w-full max-w-[223px] px-2 items-center gap-[6px] rounded-md bg-${bg}`}
+    >
       <Search />
       <input
         id="search"

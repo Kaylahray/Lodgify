@@ -73,7 +73,7 @@ const Calendar = () => {
         </div>
 
         {/* Full Calendar */}
-        <div className="col-span-6 lg:col-span-4">
+        <div className="col-span-6 lg:col-span-4 big-calendar">
           <div className="flex items-center justify-between mb-5 text-xs">
             <h3 className="text-lg font-semibold">Schedule</h3>
             <div className="flex items-center gap-2">

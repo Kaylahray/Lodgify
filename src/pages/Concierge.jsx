@@ -1,11 +1,10 @@
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import DoubleCaretSelect from "../components/DoubleCaretSelect";
-import Button from "../components/Button";
-import LayoutCard from "../components/LayoutCard";
+import CaretSelect from "../components/CaretSelect";
 import TableHeader from "../components/TableHeader";
 import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
 import TableBody from "../components/TableBody";
+import { FaEye, FaEyeSlash, FaEdit } from "react-icons/fa"; // React Icons
 import {
   useReactTable,
   flexRender,
@@ -14,139 +13,92 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+import { DateTime } from "luxon";
 import CustomPagination from "../components/CustomPagination";
 
-const columns = [
-  {
-    header: "Name",
-    accessorKey: "name",
-    footer: "Name",
-    cell: (info) => {
-      const { name, id } = info.row.original;
-      return (
-        <div className="flex items-center gap-2">
-          <img
-            src="/avatar-placeholder.png" // Placeholder avatar
-            alt={name}
-            className="w-8 h-8 rounded-full"
-          />
-          <div>
-            <div>{name}</div>
-            <div className="text-xs text-gray-500">{id}</div>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    header: "Position",
-    accessorKey: "position",
-    footer: "Position",
-  },
-  {
-    header: "Schedule",
-    accessorKey: "schedule",
-    footer: "Schedule",
-  },
-  {
-    header: "Contact",
-    accessorKey: "contact",
-    footer: "Contact",
-  },
-  {
-    header: "Email",
-    accessorKey: "email",
-    footer: "Email",
-    cell: (info) => {
-      return (
-        <a
-          href={`mailto:${info.getValue()}`}
-          className="text-blue-500"
-        >
-          {info.getValue()}
-        </a>
-      );
-    },
-  },
-  {
-    header: "Status",
-    accessorKey: "status",
-    footer: "Status",
-    cell: (info) => {
-      const status = info.getValue();
-      const statusClass =
-        status === "Active"
-          ? "bg-green-100 text-green-700"
-          : status === "Inactive"
-          ? "bg-red-100 text-red-700"
-          : "bg-gray-100 text-gray-700";
-      return (
-        <span
-          className={`px-3 py-1 rounded-full text-sm font-medium ${statusClass}`}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-];
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import { SearchTwo, Faders } from "../assets/assets";
+import Button from "../components/Button";
+import { mockRoomData } from "../features/concierge/MockRoomData";
 
 const Concierge = () => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
-  const [filters, setFilters] = useState({
-    position: "All Position",
-    status: "All Status",
-    schedule: "All Schedule",
-  });
-
-  // Example data for table
-  const data = [
+  const columns = [
     {
-      name: "Bebe W. Cullen",
-      id: "ELG001",
-      position: "Head Concierge",
-      schedule: "Monday - Friday\n8 AM - 4 PM",
-      contact: "+1 (555) 234-5678",
-      email: "bebe.cullen@example.com",
-      status: "Active",
+      header: "Name",
+      accessorKey: "name",
+      cell: (info) => {
+        const { name, id, avatar } = info.row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <img
+              src={avatar} // Use generated faker avatar here
+              alt={name}
+              className="w-8 h-8 rounded-full"
+            />
+            <div>
+              <div>{name}</div>
+              <div className="text-xs text-gray-500">{id}</div>
+            </div>
+          </div>
+        );
+      },
     },
     {
-      name: "Awar King",
-      id: "ELG002",
-      position: "Concierge",
-      schedule: "Monday - Friday\n12 PM - 8 PM",
-      contact: "+1 (555) 345-6789",
-      email: "awar.king@example.com",
-      status: "Active",
+      header: "Position",
+      accessorKey: "position",
     },
-    // Add more mock data
+    {
+      header: "Schedule",
+      accessorKey: "schedule",
+      cell: (info) => {
+        const schedule = info.getValue().split("\n");
+        return (
+          <div className="flex flex-col">
+            <span>{schedule[0]}</span>
+            <span className="text-gray-500 text-sm">
+              {schedule[1]}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      header: "Contact",
+      accessorKey: "contact",
+    },
+    {
+      header: "Email",
+      accessorKey: "email",
+      cell: (info) => {
+        return (
+          <a href={`mailto:${info.getValue()}`}>{info.getValue()}</a>
+        );
+      },
+    },
+    {
+      header: "Status",
+      accessorKey: "status",
+      cell: (info) => {
+        const status = info.getValue();
+        const statusClass =
+          status === "Active"
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700";
+        return (
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${statusClass}`}
+          >
+            {status}
+          </span>
+        );
+      },
+    },
   ];
 
-  // Filter logic
-  const filteredData = data.filter((row) => {
-    const matchPosition =
-      filters.position === "All Position" ||
-      row.position === filters.position;
-    const matchStatus =
-      filters.status === "All Status" ||
-      row.status === filters.status;
-    const matchSchedule =
-      filters.schedule === "All Schedule" ||
-      row.schedule.includes(filters.schedule);
-
-    const matchSearch =
-      row.name.toLowerCase().includes(filtering.toLowerCase()) ||
-      row.email.toLowerCase().includes(filtering.toLowerCase()) ||
-      row.contact.includes(filtering);
-
-    return (
-      matchPosition && matchStatus && matchSchedule && matchSearch
-    );
-  });
-
   const table = useReactTable({
-    data: filteredData,
+    data: mockRoomData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -161,96 +113,95 @@ const Concierge = () => {
   });
 
   return (
-    <LayoutCard
-      title="Concierge List"
-      component={
-        <div className="flex gap-4 items-center">
-          <DoubleCaretSelect
-            btnText={filters.position}
-            options={["All Position", "Head Concierge", "Concierge"]}
-            onChange={(value) =>
-              setFilters({ ...filters, position: value })
-            }
-          />
-          <DoubleCaretSelect
-            btnText={filters.status}
-            options={["All Status", "Active", "Inactive"]}
-            onChange={(value) =>
-              setFilters({ ...filters, status: value })
-            }
-          />
-          <DoubleCaretSelect
-            btnText={filters.schedule}
-            options={[
-              "All Schedule",
-              "Monday - Friday",
-              "Saturday - Sunday",
-            ]}
-            onChange={(value) =>
-              setFilters({ ...filters, schedule: value })
-            }
-          />
+    <>
+      <SecondLayoutCard
+        reverse={true}
+        extra1={
+          <div className="p-2 rounded-md bg-[#F8F8F8)]">
+            <SearchTwo />
+          </div>
+        }
+        extra2={
+          <div className="p-2 rounded-md bg-[#F8F8F8)]">
+            <Faders />
+          </div>
+        }
+        extra3={<Button btnText="Add Concierge" />}
+        search={
           <SearchBar
-            placeholder="Search by name, email, etc."
+            placeholder="Search guest, status, etc"
             value={filtering}
             onChange={(e) => setFiltering(e.target.value)}
           />
-          <Button btnText="Add Concierge" />
-        </div>
-      }
-    >
-      <div className="min-h-[80vh] flex flex-col justify-between">
-        <table className="w-full ">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="bg-gray-100">
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className="p-4 cursor-pointer text-gray-600 text-sm font-normal"
-                  >
-                    <div className="flex items-center gap-2">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      <span>
-                        {header.column.getIsSorted() === "asc" ? (
-                          <RxCaretUp />
-                        ) : header.column.getIsSorted() === "desc" ? (
-                          <RxCaretDown />
-                        ) : (
-                          <RxCaretSort />
+        }
+        component={
+          <>
+            <CaretSelect btnText="All Room" bg="customG" />
+            <CaretSelect btnText="All Status" bg="customG" />
+            <CaretSelect btnText="All Priority" bg="customG" />
+          </>
+        }
+      >
+        <div className="min-h-[80vh] flex flex-col justify-between">
+          <table className="w-full ">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="rounded-2xl overflow-hidden"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="p-4 cursor-pointer text-[#6E6E6E] text-nowrap text-[11px] font-normal leading-[1.4]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
-                      </span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b border-gray-200">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="p-4 text-gray-700 text-sm"
-                  >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </TableBody>
-        </table>
-      </div>
+                        <span>
+                          {header.column.getIsSorted() === "asc" ? (
+                            <RxCaretUp />
+                          ) : header.column.getIsSorted() ===
+                            "desc" ? (
+                            <RxCaretDown />
+                          ) : (
+                            <RxCaretSort />
+                          )}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-b-[#E7E7E7]"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </TableBody>
+          </table>
+        </div>
+      </SecondLayoutCard>
       <CustomPagination table={table} />
-    </LayoutCard>
+    </>
   );
 };
 

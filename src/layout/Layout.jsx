@@ -10,6 +10,9 @@ import {
   FinancialsIcon,
   ReviewsIcon,
   ConciergeIcon,
+  Profile,
+  GearSix,
+  Notify,
 } from "../assets/assets";
 
 import {
@@ -29,6 +32,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
+import SearchBar from "../components/SearchBar";
 
 const navigation = [
   { name: "Dashboard", path: "/", icon: DashIcon },
@@ -65,34 +69,33 @@ const navigation = [
 const Layout = () => {
   const [subnav, setSubNav] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const { pathname } = useLocation();
-  // console.log(pathname);
   const location = useLocation();
+  const currentPath = location.pathname;
+  const getDynamicTitle = (path) => {
+    const pathSegments = path.split("/").filter(Boolean); // Split path into segments
+    if (pathSegments.length === 0) return "Dashboard"; // Default to dashboard title
 
-  // Extract the last part of the pathname
-  const currentPath = location.pathname.split("/").slice(-1)[0];
+    const titleMapping = {
+      reservation: "Reservation",
+      guest: "Guest Profile",
+      concierge: "Concierge",
+      rooms: "Rooms",
+      housekeeping: "Housekeeping",
+      inventory: "Inventory",
+      financials: "Financials",
+      reviews: "Reviews",
+      invoice: "Invoice",
+      expense: "Expenses",
+      calendar: "Calendar",
+    };
 
-  // Define a dynamic title based on the current route
-  const dynamicTitle =
-    currentPath === "reservation"
-      ? "Reservation List"
-      : currentPath === "concierge"
-      ? "Concierge List"
-      : "Default Page";
-  // let renderHeader;
-  // useEffect(() => {
-  //   renderHeader = () => {
-  //     switch (pathname) {
-  //       case pathname === "/":
-  //         return "Dashboard";
+    // Map path segments to dynamic title (i.e., for breadcrumb)
+    return pathSegments
+      .map((segment) => titleMapping[segment] || "Default")
+      .join(" / ");
+  };
 
-  //       case pathname === "/reservations":
-  //         return "Reservations";
-  //       default:
-  //         break;
-  //     }
-  //   };
-  // }, [pathname]);
+  const dynamicTitle = getDynamicTitle(currentPath);
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -205,9 +208,40 @@ const Layout = () => {
           {/* Separator */}
 
           <header className=" flex-1 flex justify-between items-center">
-            {dynamicTitle}
-            {/* {renderHeader()} */}
-            hello
+            <p className="text-[24px] font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
+              {dynamicTitle}
+            </p>
+            <div className="flex-1 gap-4 flex justify-end">
+              {currentPath === "/" && (
+                <div className="flex-1 gap-4 flex justify-end">
+                  <SearchBar
+                    bg="white"
+                    placeholder="Search rooms, guests, books, e.t.c"
+                  />
+                </div>
+              )}
+              <div className="flex justify-between">
+                <div className="flex gap-3 items-center">
+                  <Profile />
+                  <div className="flex pb-1 flex-col">
+                    <p className="text-[14px] font-bold text-nowrap leading-[140%] text-[#0D0E0D]">
+                      Jaylon Dorwart
+                    </p>
+                    <p className="text-[11px] font-normal leading-[140%] text-[#6E6E6E] ">
+                      Admin
+                    </p>
+                  </div>
+                  <div className="flex gap-1 items-center">
+                    <div className="bg-white p-2 rounded-md">
+                      <GearSix />
+                    </div>
+                    <div className="bg-white p-2 rounded-md">
+                      <Notify />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </header>
         </div>
         {/* main */}

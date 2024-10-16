@@ -152,12 +152,13 @@ const Reservation = () => {
       <LayoutCard
         title="Reservation List"
         component={
-          <>
+          <div className="flex lg:flex-row items-start flex-col">
             <SearchBar
               placeholder="Search guest, status, etc"
               value={filtering}
               onChange={(e) => setFiltering(e.target.value)}
             />
+
             <DoubleCaretSelect
               btnText="All Status"
               funnel={true}
@@ -169,7 +170,7 @@ const Reservation = () => {
               bg="customG"
             />
             <Button btnText="Add Booking" />
-          </>
+          </div>
         }
       >
         <div className="min-h-[80vh] flex flex-col justify-between ">

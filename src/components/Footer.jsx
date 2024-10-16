@@ -8,7 +8,7 @@ import {
 } from "../assets/assets";
 const Footer = () => {
   return (
-    <footer className="flex px-6 pb-6 flex-col items-start gap-6 sticky bottom-0  bg-customG">
+    <footer className="flex px-6 pb-6 flex-col items-start gap-6 bg-customG">
       <div className="flex items-center gap-3 self-stretch">
         <div className="flex items-start gap-6 flex-[1_0_0]">
           <span className="text-[12px] font-semibold leading-[140%] text-customGray ">

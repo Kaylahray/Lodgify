@@ -40,14 +40,26 @@ import Wind from "./Wind.svg";
 import Stroke from "./Stroke.svg";
 import Phone from "./Phone.svg";
 import Medal from "./Medal.svg";
+import Faders from "./Faders.svg";
+import GearSix from "./GearSix.svg";
+import Notify from "./Notify.svg";
+
+import Profile from "./Profile.svg";
+
+import SearchTwo from "./SearchTwo.svg";
 
 import EnvelopeOpen from "./EnvelopeOpen.svg";
 
 export {
   Logo,
   Facebook,
+  Faders,
   Medal,
+  Profile,
+  SearchTwo,
   Phone,
+  Notify,
+  GearSix,
   EnvelopeOpen,
   RoomCheck,
   Coffee,
