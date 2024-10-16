@@ -128,9 +128,6 @@ const HouseKeeping = () => {
           <div
             className={`flex items-center gap-2 px-2 py-1 bg-yellow-800 rounded-full ${className}`}
           >
-            {/* Existing badge display */}
-            <span className="font-semibold">{housekeeping}</span>
-            {/* Housekeeping status dropdown */}
             <select
               value={housekeepingStatuses[index]}
               onChange={(e) =>
@@ -227,7 +224,7 @@ const HouseKeeping = () => {
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="p-4 cursor-pointer text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
+                    className="p-4 cursor-pointer text-nowrap text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
                   >
                     <div className="flex items-center gap-2">
                       {flexRender(
@@ -267,7 +264,7 @@ const HouseKeeping = () => {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="text-customBlack p-5 text-[12px] font-normal leading-[1.4]"
+                    className="text-customBlack p-5 text-[12px] text-nowrap font-normal leading-[1.4]"
                   >
                     {flexRender(
                       cell.column.columnDef.cell,

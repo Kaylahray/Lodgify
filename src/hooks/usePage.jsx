@@ -23,3 +23,6 @@ export const useReservation = () => {
 export const useBookingHistory = () => {
   return useContext(LodgifyContext);
 };
+export const useBookingListData = () => {
+  return useContext(LodgifyContext);
+};

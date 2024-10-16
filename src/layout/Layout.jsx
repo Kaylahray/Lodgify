@@ -142,7 +142,7 @@ const Layout = () => {
                           >
                             <item.icon />
                             {item.name}
-
+                            <div></div>
                             {item.subNav && subnav ? (
                               <item.iconOpen width={10} height={10} />
                             ) : item.subNav ? (

@@ -12,6 +12,9 @@ import CustomPagination from "../components/CustomPagination";
 import TableHeader from "../components/TableHeader";
 import TableBody from "../components/TableBody";
 import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import CaretSelect from "../components/CaretSelect";
+import SearchBar from "../components/SearchBar";
 
 const InventoryTable = () => {
   const [sorting, setSorting] = useState([]);
@@ -107,75 +110,96 @@ const InventoryTable = () => {
   });
 
   return (
-    <div className="min-h-[80vh] flex flex-col justify-between">
-      <table className="w-full">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              key={headerGroup.id}
-              className="rounded-2xl overflow-hidden"
-            >
-              <th className="p-4">
-                <input type="checkbox" />
-              </th>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="p-4 cursor-pointer text-nowrap text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
+    <>
+      <SecondLayoutCard
+        search={
+          <SearchBar
+            placeholder="Search guest, status, etc"
+            value={filtering}
+            onChange={(e) => setFiltering(e.target.value)}
+          />
+        }
+        component={
+          <>
+            <CaretSelect btnText="All Room" />
+            <CaretSelect btnText="All Status" />
+            <CaretSelect btnText="All Priority" />
+          </>
+        }
+      >
+        <div className="min-h-[80vh] flex flex-col justify-between">
+          <table className="w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="rounded-2xl overflow-hidden"
                 >
-                  <div className="flex items-center gap-2">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    <span>
-                      {header.column.getIsSorted() === "asc" ? (
-                        <RxCaretUp />
-                      ) : header.column.getIsSorted() === "desc" ? (
-                        <RxCaretDown />
-                      ) : (
-                        <RxCaretSort />
+                  <th className="p-4">
+                    <input type="checkbox" />
+                  </th>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="p-4 cursor-pointer text-nowrap text-[#6E6E6E] text-[11px] font-normal leading-[1.4]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        <span>
+                          {header.column.getIsSorted() === "asc" ? (
+                            <RxCaretUp />
+                          ) : header.column.getIsSorted() ===
+                            "desc" ? (
+                            <RxCaretDown />
+                          ) : (
+                            <RxCaretSort />
+                          )}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className={` border-b border-b-[#E7E7E7] ${
+                    selectedRows[row.id] ? "bg-gray-200" : ""
+                  }`}
+                >
+                  <td className="p-4">
+                    <input
+                      type="checkbox"
+                      checked={!!selectedRows[row.id]}
+                      onChange={() => handleCheckboxChange(row.id)}
+                    />
+                  </td>
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                    </span>
-                  </div>
-                </th>
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className={` border-b border-b-[#E7E7E7] ${
-                selectedRows[row.id] ? "bg-gray-200" : ""
-              }`}
-            >
-              <td className="p-4">
-                <input
-                  type="checkbox"
-                  checked={!!selectedRows[row.id]}
-                  onChange={() => handleCheckboxChange(row.id)}
-                />
-              </td>
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
-                >
-                  {flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext()
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </TableBody>
-      </table>
+            </TableBody>
+          </table>
+        </div>
+      </SecondLayoutCard>
+
       <CustomPagination table={table} />
-    </div>
+    </>
   );
 };
 
