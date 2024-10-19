@@ -11,7 +11,7 @@ export const Conversations = ({ currentId = 1, open }) => {
   }, [open, ready]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       {conversations.map((e) => (
         <div
           key={e.id}
@@ -20,11 +20,14 @@ export const Conversations = ({ currentId = 1, open }) => {
             currentId === e.id ? " bg-gray-100" : ""
           } hover:bg-gray-50 p-2 rounded-xl cursor-pointer overflow-x-hidden`}
         >
-          <div className="flex justify-start gap-2 overflow-x-hidden items-around">
+          <div className="flex justify-start gap-2 overflow-x-hidden w-full items-center">
             <div className="overflow-hidden rounded-full w-11 h-11">
-              <img src={e.avatar} className="w-11 h-11" />
+              <img
+                src={e.avatar}
+                className="object-cover w-11 h-11"
+              />
             </div>
-            <div className="flex flex-col justify-around name-group">
+            <div className="flex flex-col justify-around name-group w-full">
               <div className="flex justify-between w-full">
                 <h4 className="font-medium leading-3">{e.sender}</h4>
                 <span className="text-[0.60rem] text-gray-400">

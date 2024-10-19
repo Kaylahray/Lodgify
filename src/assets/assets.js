@@ -40,23 +40,40 @@ import Wind from "./Wind.svg";
 import Stroke from "./Stroke.svg";
 import Phone from "./Phone.svg";
 import Medal from "./Medal.svg";
+import Close from "./Close.svg";
+
 import Faders from "./Faders.svg";
 import GearSix from "./GearSix.svg";
 import Notify from "./Notify.svg";
+import NotePen from "./NotePen.svg";
 
 import Profile from "./Profile.svg";
-
+import CaretRight from "./CaretRight.svg";
+import FilePdf from "./FilePdf.svg";
+import FileText from "./FileText.svg";
+import ImageScreen from "./ImageScreen.svg";
+import Info from "./Info.svg";
+import Link from "./Link.svg";
+import SmallLink from "./SmallLink.svg";
 import SearchTwo from "./SearchTwo.svg";
-
 import EnvelopeOpen from "./EnvelopeOpen.svg";
 
 export {
   Logo,
+  CaretRight,
+  SmallLink,
+  Info,
+  ImageScreen,
+  Link,
+  FilePdf,
+  FileText,
   Facebook,
   Faders,
   Medal,
+  NotePen,
   Profile,
   SearchTwo,
+  Close,
   Phone,
   Notify,
   GearSix,
