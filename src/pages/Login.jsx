@@ -1,6 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "../assets/assets";
+import { checkAuth, signInWithEmail } from "../services/apiAuth";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({
+    email: null,
+    message: null,
+    password: null,
+  });
+  const [password, setPassword] = useState("");
+  const [session, setSession] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const subscription = checkAuth(setSession);
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (session) {
+    // Redirect to dashboard
+    navigate("/");
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!email || !password) return;
+
+    const { error, data } = await signInWithEmail(email, password);
+
+    if (error) {
+      setErrors({
+        email: errors.email,
+        password: errors.password,
+        message: error.message,
+      });
+    } else {
+      console.log(data);
+      navigate("/");
+    }
+  }
+
+  // Clear the email error when the user types in the email field
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (errors.email || errors.message) {
+      setErrors({ ...errors, email: null, message: null });
+    }
+  };
+
+  // Clear the password error when the user types in the password field
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (errors.password || errors.message) {
+      setErrors({ ...errors, password: null, message: null });
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-1">
       <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -10,11 +68,16 @@ const Login = () => {
             <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign in to your account
             </h2>
+            {errors.message ? (
+              <p className="bg-red-50 text-red-700 p-4 border-red-700 rounded-md text-center mt-4">
+                {errors.message}
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-10">
             <div>
-              <form action="#" method="POST" className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label
                     htmlFor="email"
@@ -27,11 +90,18 @@ const Login = () => {
                       id="email"
                       name="email"
                       type="email"
+                      onChange={handleEmailChange} // Clear email error on change
+                      value={email}
                       required
                       autoComplete="email"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
+                  {errors.email ? (
+                    <p className=" text-red-700 p-1 mt-2">
+                      {errors.email}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div>
@@ -46,11 +116,18 @@ const Login = () => {
                       id="password"
                       name="password"
                       type="password"
+                      value={password}
+                      onChange={handlePasswordChange} // Clear password error on change
                       required
                       autoComplete="current-password"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
+                  {errors.password ? (
+                    <p className="text-red-700 p-1 mt-2">
+                      {errors.password}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="flex items-center justify-between">

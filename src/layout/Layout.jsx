@@ -34,6 +34,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
 import { messages } from "../features/Chat/messages";
+import { logout } from "../services/apiAuth";
 
 const navigation = [
   { name: "Dashboard", path: "/", icon: DashIcon },
@@ -248,6 +249,12 @@ const Layout = () => {
                     <div className="bg-white p-2 rounded-md">
                       <Notify />
                     </div>
+                    <button
+                      onClick={logout}
+                      className="cursor-pointer"
+                    >
+                      logout
+                    </button>
                   </div>
                 </div>
               </div>

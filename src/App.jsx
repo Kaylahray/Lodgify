@@ -23,10 +23,15 @@ import Expense from "./pages/Expense";
 import GuestProfile from "./features/reservation/GuestProfile";
 import InvoiceTable from "./pages/Invoice";
 import Login from "./pages/Login";
+import AuthGuard from "./authGuard/AuthGuard";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <AuthGuard>
+        <Layout />
+      </AuthGuard>
+    ),
     children: [
       { index: true, element: <Dashboard /> },
       { path: "rooms", element: <Rooms /> },
@@ -61,6 +66,7 @@ const router = createBrowserRouter([
   },
   { path: "login", element: <Login /> },
 ]);
+
 const App = () => {
   const queryClient = new QueryClient();
   return (

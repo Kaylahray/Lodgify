@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllData } from "../api/apiService";
+import { fetchAllData } from "../services/apiReservation";
 const LodgifyContext = createContext();
 
 export const LodgifyProvider = ({ children }) => {
