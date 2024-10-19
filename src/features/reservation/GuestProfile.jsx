@@ -22,21 +22,20 @@ const GuestProfile = () => {
   // }]
 
   const filtered = reservationData.filter((item) => item.id === id);
-  console.log(filtered);
 
   return (
     <div className="grid grid-cols-[1fr_3fr] gap-6">
       <MoreOptionCard title="Profile">
-        <ProfileSection />
+        <ProfileSection filtered={filtered} />
       </MoreOptionCard>
       {/* Center Section: Booking Inf */}
 
-      <BookingInfo />
+      <BookingInfo filtered={filtered} />
     </div>
   );
 };
 
-const ProfileSection = () => (
+const ProfileSection = ({ filtered }) => (
   <div>
     <div className="flex items-center gap-4 my-5">
       <img
@@ -45,10 +44,16 @@ const ProfileSection = () => (
         className="rounded-full w-20 h-20"
       />
       <div className="flex flex-col gap-2">
-        <h2 className="text-black text-[22px] font-bold leading-[26.4px]">
-          Angus Copper
-        </h2>
-        <p className="text-gray-10 font-lato text-[12px] font-normal leading-[16.8px]">
+        {filtered.map((user) => (
+          <h2
+            key={user.id}
+            className="text-black text-[22px] font-bold leading-[26.4px]"
+          >
+            {user.guest}
+          </h2>
+        ))}
+
+        <p className="text-gray-10  text-[12px] font-normal leading-[16.8px]">
           G011-987654321
         </p>
       </div>
@@ -150,27 +155,33 @@ const ProfileSection = () => (
   </div>
 );
 
-const BookingInfo = () => {
+const BookingInfo = ({ filtered }) => {
   return (
     <div className="grid grid-cols-[2fr_1fr] gap-4 bg-white rounded-md">
       <MoreOptionCard title="Booking Info">
         <div className="p-4 border border-gray-300 rounded-lg shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">Booking Confirmed</h2>
-            <span className="text-xl font-semibold text-[#0D0E0D]">
-              LG-B00109
-            </span>
-          </div>
+          {filtered.map((user) => (
+            <div key={user.id}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold">
+                  Booking Confirmed
+                </h2>
+                <span className="text-xl font-semibold text-[#0D0E0D]">
+                  {user.id}
+                </span>
+              </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <InfoItem label="Room Type" value="Deluxe" />
-            <InfoItem label="Room Number" value="101" />
-            <InfoItem label="Price" value="$150/night" />
-            <InfoItem label="Guests" value="2 Adults" />
-            <InfoItem label="Check In" value="June 19, 2024" />
-            <InfoItem label="Check Out" value="June 22, 2024" />
-            <InfoItem label="Duration" value="3 nights" />
-          </div>
+              <div className="grid grid-cols-2 gap-2">
+                <InfoItem label="Room Type" value="Deluxe" />
+                <InfoItem label="Room Number" value="101" />
+                <InfoItem label="Price" value="$150/night" />
+                <InfoItem label="Guests" value="2 Adults" />
+                <InfoItem label="Check In" value="June 19, 2024" />
+                <InfoItem label="Check Out" value="June 22, 2024" />
+                <InfoItem label="Duration" value="3 nights" />
+              </div>
+            </div>
+          ))}
 
           <div className="mt-4">
             <p className="text-[#6E6E6E] text-[10px] font-normal leading-[140%]">

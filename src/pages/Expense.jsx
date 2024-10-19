@@ -9,6 +9,7 @@ import LayoutCard from "../components/LayoutCard";
 import TableHeader from "../components/TableHeader";
 import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
 import TableBody from "../components/TableBody";
+import { MdOutlineFileDownload } from "react-icons/md";
 import { FaEye, FaDownload } from "react-icons/fa"; // React Icons
 import {
   useReactTable,
@@ -19,27 +20,8 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 import CustomPagination from "../components/CustomPagination";
-
-const data = [
-  {
-    expense: "Housekeeping Supplies",
-    category: "Supplies",
-    quantity: 10,
-    amount: "$500",
-    date: "June 1, 2028",
-    status: "Completed",
-  },
-  {
-    expense: "Electricity Bill",
-    category: "Utilities",
-    quantity: 1,
-    amount: "$1000",
-    date: "June 2, 2028",
-    status: "Completed",
-  },
-  // Add more mock data as needed
-];
-
+import { mockExpenseData } from "../features/expense/MockExpenseData";
+import CaretSelect from "../components/CaretSelect";
 const columns = [
   {
     header: "Expense",
@@ -99,8 +81,9 @@ const columns = [
         <button className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700">
           <FaEye />
         </button>
-        <button className="p-2 rounded-md bg-yellow-100 hover:bg-yellow-200 text-yellow-700">
-          <FaDownload />
+        <button className="flex gap-1 items-center px-2 py-1.5 rounded-md bg-customYellow hover:bg-yellow-200 ">
+          <MdOutlineFileDownload />
+          <span>Download</span>
         </button>
       </div>
     ),
@@ -111,7 +94,7 @@ const Expense = () => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
   const table = useReactTable({
-    data,
+    data: mockExpenseData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -125,16 +108,21 @@ const Expense = () => {
     onGlobalFilterChange: setFiltering,
   });
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-[3fr_1fr] gap-20">
-        <div className="flex flex-col">
-          <div></div>
-          <div>
-            <EarningsChart />
+    <div className="flex flex-col gap-5">
+      <div>
+        <div className="grid grid-cols-[3fr_1fr] gap-5">
+          <div className="flex flex-col">
+            <div></div>
+            <LayoutCard
+              title="Earnings"
+              component={<CaretSelect btnText="This year" />}
+            >
+              <EarningsChart />
+            </LayoutCard>
           </div>
-        </div>
-        <div>
-          <ChartIncome />
+          <div className="bg-yellow-600">
+            <ChartIncome />
+          </div>
         </div>
       </div>
 

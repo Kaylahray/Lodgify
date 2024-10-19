@@ -114,15 +114,7 @@ export const EarningsChart = () => {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow-xl rounded-2xl">
-      <div className="flex items-center justify-between mb-5 text-xs">
-        <h3 className="text-sm font-semibold">Earnings</h3>
-        <button className="flex justify-between items-center w-32 gap-1 px-4 bg-[#E7F68E] h-7 rounded-md">
-          <FaRegCalendar size={10} />
-          This Year
-          <FaChevronDown size={10} />
-        </button>
-      </div>
+    <div className="p-4 bg-white">
       <canvas id="bar-chart" ref={chartRef}></canvas>
     </div>
   );

@@ -46,6 +46,7 @@ import Faders from "./Faders.svg";
 import GearSix from "./GearSix.svg";
 import Notify from "./Notify.svg";
 import NotePen from "./NotePen.svg";
+import HouseKeepingIconn from "./HouseKeepingIconn.svg";
 
 import Profile from "./Profile.svg";
 import CaretRight from "./CaretRight.svg";
@@ -64,6 +65,7 @@ export {
   SmallLink,
   Info,
   ImageScreen,
+  HouseKeepingIconn,
   Link,
   FilePdf,
   FileText,

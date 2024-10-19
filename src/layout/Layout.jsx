@@ -9,6 +9,7 @@ import {
   CalendarIcon,
   FinancialsIcon,
   ReviewsIcon,
+  HouseKeepingIconn,
   ConciergeIcon,
   Profile,
   GearSix,
@@ -49,7 +50,7 @@ const navigation = [
   {
     name: "Housekeeping",
     path: "/housekeeping",
-    icon: MessagesIcon,
+    icon: HouseKeepingIconn,
   },
   { name: "Inventory", path: "/inventory", icon: InventoryIcon },
   { name: "Calendar", path: "/calendar", icon: CalendarIcon },
@@ -218,8 +219,16 @@ const Layout = () => {
                   </p>
                   <p>reservation/guest-profile</p>
                 </div>
+              ) : currentPath.includes("invoice") ? (
+                <div className="flex flex-col">
+                  <h1>Invoice</h1>
+                </div>
+              ) : currentPath.includes("expense") ? (
+                <div className="flex flex-col">
+                  <h1>Expenses</h1>
+                </div>
               ) : (
-                dynamicTitle
+                <h1>{dynamicTitle}</h1>
               )}
             </p>
             <div className="flex-1 gap-4 flex justify-end">
