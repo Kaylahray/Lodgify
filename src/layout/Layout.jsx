@@ -207,11 +207,19 @@ const Layout = () => {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
 
-          {/* Separator */}
-
+          {/* header */}
           <header className=" flex-1 flex py-2 justify-between items-center">
             <p className="lg:text-[24px] text-lg font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
-              {dynamicTitle}
+              {currentPath.includes("guest") ? (
+                <div className="flex flex-col">
+                  <p>
+                    back <span>Guest Profile</span>
+                  </p>
+                  <p>reservation/guest-profile</p>
+                </div>
+              ) : (
+                dynamicTitle
+              )}
             </p>
             <div className="flex-1 gap-4 flex justify-end">
               {currentPath === "/" && (

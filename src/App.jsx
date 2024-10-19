@@ -22,6 +22,7 @@ import { LodgifyProvider } from "./hooks/usePage";
 import Expense from "./pages/Expense";
 import GuestProfile from "./features/reservation/GuestProfile";
 import InvoiceTable from "./pages/Invoice";
+import Login from "./pages/Login";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       { path: "concierge", element: <Concierge /> },
     ],
   },
+  { path: "login", element: <Login /> },
 ]);
 const App = () => {
   const queryClient = new QueryClient();
