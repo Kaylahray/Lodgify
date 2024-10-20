@@ -127,7 +127,7 @@ const Layout = () => {
             <span className="sr-only">Close sidebar</span>
             <XMarkIcon
               aria-hidden="true"
-              className="h-6 w-6 text-white"
+              className="h-6 w-6 text-black"
             />
           </button>
           <div className="flex h-16 shrink-0 items-center">
