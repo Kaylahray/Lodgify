@@ -41,13 +41,15 @@ const GuestProfile = () => {
   console.log(filtered);
 
   return (
-    <div className="grid grid-cols-[1fr_3fr] gap-6">
-      <MoreOptionCard title="Profile">
-        <ProfileSection />
-      </MoreOptionCard>
-      {/* Center Section: Booking Inf */}
+    <div className="flex flex-col gap-5">
+      <div className="grid lg:grid-cols-[1fr_3fr] gap-6">
+        <MoreOptionCard title="Profile">
+          <ProfileSection />
+        </MoreOptionCard>
+        {/* Center Section: Booking Inf */}
 
-      <BookingInfo />
+        <BookingInfo />
+      </div>
       <Table />
     </div>
   );
@@ -169,7 +171,7 @@ const ProfileSection = () => (
 
 const BookingInfo = () => {
   return (
-    <div className="grid grid-cols-[2fr_1fr] gap-4 bg-white rounded-md">
+    <div className="grid lg:grid-cols-[2fr_1fr] gap-4 bg-white rounded-md">
       <MoreOptionCard title="Booking Info">
         <div className="p-4 rounded-lg ">
           <div className="flex items-center justify-between mb-4">
@@ -316,7 +318,7 @@ const Table = () => {
           </>
         }
       >
-        <div className="min-h-[80vh] flex flex-col justify-between">
+        <div className=" flex flex-col justify-between">
           <table className="w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
