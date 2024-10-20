@@ -1,17 +1,33 @@
-import React from "react";
-import { NavLink, useParams } from "react-router-dom";
-import MoreOptionCard from "../../components/MoreOptionCard";
-import { useReservation } from "../../hooks/usePage";
 import {
-  Stroke,
-  Phone,
-  EnvelopeOpen,
-  Medal,
-  Guest,
   Bed,
+  EnvelopeOpen,
+  Guest,
+  Medal,
+  Phone,
   Size,
+  Stroke,
 } from "../../assets/assets";
+import { NavLink, useParams } from "react-router-dom";
+import { RxCaretDown, RxCaretSort, RxCaretUp } from "react-icons/rx";
+import { guestBookingsColumns } from "./GuestBookingList";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import CaretSelect from "../../components/CaretSelect";
 import InfoItem from "./InfoItem";
+import LayoutCard from "../../components/LayoutCard";
+import MoreOptionCard from "../../components/MoreOptionCard";
+import SearchBar from "../../components/SearchBar";
+import TableBody from "../../components/TableBody";
+import TableHeader from "../../components/TableHeader";
+import { useReservation } from "../../hooks/usePage";
+import { useState } from "react";
 
 const GuestProfile = () => {
   const { id } = useParams();
@@ -22,38 +38,34 @@ const GuestProfile = () => {
   // }]
 
   const filtered = reservationData.filter((item) => item.id === id);
+  console.log(filtered);
 
   return (
     <div className="grid grid-cols-[1fr_3fr] gap-6">
       <MoreOptionCard title="Profile">
-        <ProfileSection filtered={filtered} />
+        <ProfileSection />
       </MoreOptionCard>
       {/* Center Section: Booking Inf */}
 
-      <BookingInfo filtered={filtered} />
+      <BookingInfo />
+      <Table />
     </div>
   );
 };
 
-const ProfileSection = ({ filtered }) => (
+const ProfileSection = () => (
   <div>
     <div className="flex items-center gap-4 my-5">
       <img
         src="https://via.placeholder.com/100"
         alt="Profile"
-        className="rounded-full w-20 h-20"
+        className="w-20 h-20 rounded-full"
       />
       <div className="flex flex-col gap-2">
-        {filtered.map((user) => (
-          <h2
-            key={user.id}
-            className="text-black text-[22px] font-bold leading-[26.4px]"
-          >
-            {user.guest}
-          </h2>
-        ))}
-
-        <p className="text-gray-10  text-[12px] font-normal leading-[16.8px]">
+        <h2 className="text-black text-[22px] font-bold leading-[26.4px]">
+          Angus Copper
+        </h2>
+        <p className="text-gray-10 font-lato text-[12px] font-normal leading-[16.8px]">
           G011-987654321
         </p>
       </div>
@@ -69,7 +81,7 @@ const ProfileSection = ({ filtered }) => (
           Phone: +1 (555) 789-1234
         </p>
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <div className="p-1 rounded bg-[#D5F6E5]">
           <EnvelopeOpen />
         </div>
@@ -155,33 +167,27 @@ const ProfileSection = ({ filtered }) => (
   </div>
 );
 
-const BookingInfo = ({ filtered }) => {
+const BookingInfo = () => {
   return (
     <div className="grid grid-cols-[2fr_1fr] gap-4 bg-white rounded-md">
       <MoreOptionCard title="Booking Info">
-        <div className="p-4 border border-gray-300 rounded-lg shadow-md">
-          {filtered.map((user) => (
-            <div key={user.id}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold">
-                  Booking Confirmed
-                </h2>
-                <span className="text-xl font-semibold text-[#0D0E0D]">
-                  {user.id}
-                </span>
-              </div>
+        <div className="p-4 rounded-lg ">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold">Booking Confirmed</h2>
+            <span className="text-xl font-semibold text-[#0D0E0D]">
+              LG-B00109
+            </span>
+          </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <InfoItem label="Room Type" value="Deluxe" />
-                <InfoItem label="Room Number" value="101" />
-                <InfoItem label="Price" value="$150/night" />
-                <InfoItem label="Guests" value="2 Adults" />
-                <InfoItem label="Check In" value="June 19, 2024" />
-                <InfoItem label="Check Out" value="June 22, 2024" />
-                <InfoItem label="Duration" value="3 nights" />
-              </div>
-            </div>
-          ))}
+          <div className="grid grid-cols-2 gap-2">
+            <InfoItem label="Room Type" value="Deluxe" />
+            <InfoItem label="Room Number" value="101" />
+            <InfoItem label="Price" value="$150/night" />
+            <InfoItem label="Guests" value="2 Adults" />
+            <InfoItem label="Check In" value="June 19, 2024" />
+            <InfoItem label="Check Out" value="June 22, 2024" />
+            <InfoItem label="Duration" value="3 nights" />
+          </div>
 
           <div className="mt-4">
             <p className="text-[#6E6E6E] text-[10px] font-normal leading-[140%]">
@@ -233,7 +239,7 @@ const BookingInfo = ({ filtered }) => {
           <Stroke />
         </div>
         <div>
-          <h4 className="font-semibold text-md mb-4">
+          <h4 className="mb-4 font-semibold text-md">
             Price Summary
           </h4>
           <ul className="text-sm text-gray-700">
@@ -254,9 +260,132 @@ const BookingInfo = ({ filtered }) => {
   );
 };
 
+const Table = () => {
+  const [sorting, setSorting] = useState([]);
+  const [filtering, setFiltering] = useState("");
+  const bookings = [
+    {
+      image: "https://via.placeholder.com/100", // Replace with the actual image URL
+      bookingId: "LG-B00109",
+      bookingDate: new Date("June 09, 2028, 9:08 AM").toISOString(),
+      roomType: "Deluxe",
+      roomNumber: "Room 101",
+      checkIn: new Date("June 19, 2024, 1:45 PM").toISOString(),
+      checkOut: new Date("June 21, 2024, 11:45 AM").toISOString(),
+      guests: "2 Guests",
+    },
+    {
+      image: "https://via.placeholder.com/100", // Replace with the actual image URL
+      bookingId: "LG-B00085",
+      bookingDate: new Date("March 20, 2028, 9:08 AM").toISOString(),
+      roomType: "Suite",
+      roomNumber: "Room 305",
+      checkIn: new Date("March 25, 2028, 1:45 PM").toISOString(),
+      checkOut: new Date("March 30, 2028, 11:45 AM").toISOString(),
+      guests: "1 Guest",
+    },
+  ];
+
+  const table = useReactTable({
+    data: bookings,
+    columns: guestBookingsColumns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting: sorting,
+      globalFilter: filtering,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setFiltering,
+  });
+
+  return (
+    <div className="col-span-2 bg-white rounded-3xl">
+      <LayoutCard
+        title="Booking List"
+        component={
+          <>
+            <SearchBar
+              placeholder="Search guest, status, etc"
+              value={filtering}
+              onChange={(e) => setFiltering(e.target.value)}
+            />
+            <CaretSelect btnText="All Status" />
+          </>
+        }
+      >
+        <div className="min-h-[80vh] flex flex-col justify-between">
+          <table className="w-full">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr
+                  key={headerGroup.id}
+                  className="overflow-hidden rounded-2xl"
+                >
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="p-4 cursor-pointer text-[#6E6E6E] text-nowrap text-[11px] font-normal leading-[1.4]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        <span>
+                          {header.column.getIsSorted() === "asc" ? (
+                            <RxCaretUp />
+                          ) : header.column.getIsSorted() ===
+                            "desc" ? (
+                            <RxCaretDown />
+                          ) : (
+                            <RxCaretSort />
+                          )}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-b-[#E7E7E7]"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className="text-customBlack text-nowrap p-5 text-[12px] font-normal leading-[1.4]"
+                    >
+                      <NavLink
+                        to={`/reservation/guest-profile/${row.original.id}`} // assuming guestId exists in your data
+                        className="flex w-full"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </NavLink>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </TableBody>
+          </table>
+        </div>
+      </LayoutCard>
+    </div>
+  );
+};
+
 // <div>
-//   <div className="flex justify-between items-center mb-4">
-//     <h2 className="font-bold text-2xl">Booking ID: LG-B00109</h2>
+//   <div className="flex items-center justify-between mb-4">
+//     <h2 className="text-2xl font-bold">Booking ID: LG-B00109</h2>
 //     <span className="text-sm text-green-600">
 //       Booking Confirmed
 //     </span>
@@ -288,11 +417,11 @@ const BookingInfo = ({ filtered }) => {
 //       <li>Airport Pickup Arranged</li>
 //     </ul>
 //   </div>
-//   <div className="mt-4 flex justify-between">
-//     <button className="px-4 py-2 bg-yellow-500 text-white rounded">
+//   <div className="flex justify-between mt-4">
+//     <button className="px-4 py-2 text-white bg-yellow-500 rounded">
 //       Edit
 //     </button>
-//     <button className="px-4 py-2 bg-red-500 text-white rounded">
+//     <button className="px-4 py-2 text-white bg-red-500 rounded">
 //       Cancel Booking
 //     </button>
 //   </div>

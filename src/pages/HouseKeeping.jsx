@@ -39,36 +39,40 @@ const HouseKeeping = () => {
     {
       accessorKey: "roomType",
       header: "Room Type",
-      cell: ({ getValue }) => (
-        <span className="font-semibold">{getValue()}</span>
-      ),
+      cell: ({ getValue }) => <span>{getValue()}</span>,
     },
     {
       accessorKey: "housekeeping",
       header: "Housekeeping Status",
-      cell: ({ row, getValue }) => {
+      cell: ({ getValue }) => {
         const housekeeping = getValue();
-        const index = row.index;
-        const className =
-          housekeeping === "Ready"
-            ? "bg-green-100 text-green-700"
-            : housekeeping === "Needs Cleaning"
-            ? "bg-red-100 text-red-700"
-            : housekeeping === "Cleaning in Progress"
-            ? "bg-yellow-100 text-yellow-700"
-            : "";
+        let bgClass = "";
+        let textClass = "";
+
+        // Set background and text colors based on status
+        switch (housekeeping) {
+          case "Ready":
+            bgClass = "bg-[#E7F68E]";
+            break;
+          case "Needs Cleaning":
+            bgClass = "bg-[#FFC7C7]";
+            break;
+          case "Needs Inspection":
+            bgClass = "bg-[#FEE]";
+            break;
+          case "Cleaning in Progress":
+            bgClass = "bg-[#D5F6E5]";
+            break;
+          default:
+            break;
+        }
 
         return (
           <div
-            className={`flex items-center gap-2 px-2 py-1 rounded-full ${className}`}
+            className={`flex items-center w-fit gap-[5px] px-[6px] py-[3px] rounded-[4px] bg-[#D5F6E5]"  justify-between  ${bgClass}`}
           >
-            <select className="bg-transparent p-1 rounded-md">
-              <option value="Ready">Ready</option>
-              <option value="Needs Cleaning">Needs Cleaning</option>
-              <option value="Cleaning in Progress">
-                Cleaning in Progress
-              </option>
-            </select>
+            <span>{housekeeping}</span>
+            <RxCaretDown className="ml-2" />
           </div>
         );
       },
@@ -78,16 +82,34 @@ const HouseKeeping = () => {
       header: "Priority",
       cell: ({ getValue }) => {
         const priority = getValue();
-        const className =
-          priority === "High"
-            ? "text-red-700"
-            : priority === "Medium"
-            ? "text-yellow-700"
-            : "text-green-700";
+        let textClass = "";
+        let bgClass = "";
+
+        // Set background and text colors based on priority
+        switch (priority) {
+          case "High":
+            textClass = "text-red-700";
+            bgClass = "bg-red-100";
+            break;
+          case "Medium":
+            textClass = "text-yellow-700";
+            bgClass = "bg-yellow-100";
+            break;
+          case "Low":
+            textClass = "text-green-700";
+            bgClass = "bg-green-100";
+            break;
+          default:
+            break;
+        }
+
         return (
-          <span className={`font-semibold ${className}`}>
-            {priority}
-          </span>
+          <div
+            className={`flex items-center justify-between px-2 py-1 rounded-full ${bgClass} ${textClass}`}
+          >
+            <span>{priority}</span>
+            <RxCaretDown className="ml-2" />
+          </div>
         );
       },
     },
@@ -104,6 +126,7 @@ const HouseKeeping = () => {
       header: "Notes",
     },
   ];
+
   const table = useReactTable({
     data: mockHouseKeepingData,
     columns,

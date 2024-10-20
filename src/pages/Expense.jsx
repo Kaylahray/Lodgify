@@ -22,6 +22,14 @@ import {
 import CustomPagination from "../components/CustomPagination";
 import { mockExpenseData } from "../features/expense/MockExpenseData";
 import CaretSelect from "../components/CaretSelect";
+import ExpenseCard from "../features/expense/ExpenseCard";
+import {
+  Request,
+  Transfer,
+  TrendDown,
+  TrendUp,
+  Wallet,
+} from "../assets/assets";
 const columns = [
   {
     header: "Expense",
@@ -110,9 +118,34 @@ const Expense = () => {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <div className="grid grid-cols-[3fr_1fr] gap-5">
-          <div className="flex flex-col">
-            <div></div>
+        <div className="grid md:grid-cols-[3fr_1fr] gap-5">
+          <div className="flex flex-col gap-5">
+            <div className="grid md:grid-cols-3 gap-5">
+              <ExpenseCard
+                title="Total Balance"
+                icon={Wallet}
+                amount="15,650"
+                icon2={TrendUp}
+                trendColor="customYellow"
+                percentage={3.56}
+              />
+              <ExpenseCard
+                title="Total Income"
+                icon={Request}
+                amount="45,650"
+                icon2={TrendDown}
+                trendColor="customPink"
+                percentage={1.25}
+              />
+              <ExpenseCard
+                title="Total Expenses"
+                icon={Transfer}
+                amount="30,000"
+                icon2={TrendUp}
+                trendColor="customYellow"
+                percentage={4.79}
+              />
+            </div>
             <LayoutCard
               title="Earnings"
               component={<CaretSelect btnText="This year" />}
@@ -120,83 +153,87 @@ const Expense = () => {
               <EarningsChart />
             </LayoutCard>
           </div>
-          <div className="bg-yellow-600">
+          <div className="bg-white p-2">
             <ChartIncome />
           </div>
         </div>
       </div>
-
-      <LayoutCard
-        title="Transactions"
-        component={
-          <div className="flex gap-4">
-            <SearchBar
-              placeholder="Search expense"
-              value={filtering}
-              onChange={(e) => setFiltering(e.target.value)}
-            />
-            <DoubleCaretSelect btnText="All Category" />
-            <DoubleCaretSelect btnText="All Status" />
-            <DoubleCaretSelect
-              btnText="1 - 18 June 2028"
-              calender={true}
-            />
-          </div>
-        }
-      >
-        <div className="min-h-[80vh] flex flex-col justify-between">
-          <table className="w-full ">
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="bg-gray-100">
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                      className="p-4 cursor-pointer text-gray-600 text-sm font-normal"
-                    >
-                      <div className="flex items-center gap-2">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        <span>
-                          {header.column.getIsSorted() === "asc" ? (
-                            <RxCaretUp />
-                          ) : header.column.getIsSorted() ===
-                            "desc" ? (
-                            <RxCaretDown />
-                          ) : (
-                            <RxCaretSort />
+      <>
+        <LayoutCard
+          title="Transactions"
+          component={
+            <div className="flex gap-4">
+              <SearchBar
+                placeholder="Search expense"
+                value={filtering}
+                onChange={(e) => setFiltering(e.target.value)}
+              />
+              <DoubleCaretSelect btnText="All Category" />
+              <DoubleCaretSelect btnText="All Status" />
+              <DoubleCaretSelect
+                btnText="1 - 18 June 2028"
+                calender={true}
+              />
+            </div>
+          }
+        >
+          <div className="min-h-[80vh] flex flex-col justify-between">
+            <table className="w-full ">
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className="bg-gray-100">
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        onClick={header.column.getToggleSortingHandler()}
+                        className="p-4 cursor-pointer text-gray-600 text-sm font-normal"
+                      >
+                        <div className="flex items-center gap-2">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
                           )}
-                        </span>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-gray-200">
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="p-4 text-gray-700 text-sm"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </TableBody>
-          </table>
-        </div>
+                          <span>
+                            {header.column.getIsSorted() === "asc" ? (
+                              <RxCaretUp />
+                            ) : header.column.getIsSorted() ===
+                              "desc" ? (
+                              <RxCaretDown />
+                            ) : (
+                              <RxCaretSort />
+                            )}
+                          </span>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="border-b border-gray-200"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="p-4 text-gray-700 text-sm"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </TableBody>
+            </table>
+          </div>
+        </LayoutCard>
         <CustomPagination table={table} />
-      </LayoutCard>
+      </>
     </div>
   );
 };

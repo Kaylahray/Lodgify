@@ -14,6 +14,7 @@ import {
   Profile,
   GearSix,
   Notify,
+  ArrowLeft,
 } from "../assets/assets";
 
 import {
@@ -31,10 +32,15 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigation,
+} from "react-router-dom";
 import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
-import { messages } from "../features/Chat/messages";
 import { logout } from "../services/apiAuth";
 
 const navigation = [
@@ -211,26 +217,35 @@ const Layout = () => {
 
           {/* header */}
           <header className=" flex-1 flex py-2 justify-between items-center">
-            <p className="lg:text-[24px] text-lg font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
+            <div className="lg:text-[24px] text-lg font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
               {currentPath.includes("guest") ? (
-                <div className="flex flex-col">
-                  <p>
-                    back <span>Guest Profile</span>
-                  </p>
-                  <p>reservation/guest-profile</p>
+                <div className="flex gap-4">
+                  <NavLink to="/reservation">
+                    <div className="bg-white p-1.5 rounded-lg flex items-center h-fit cursor-pointer">
+                      <ArrowLeft />
+                    </div>
+                  </NavLink>
+
+                  <div className="flex flex-col gap-1">
+                    <p className="lg:text-[24px] text-lg font-bold leading-[110%] tracking-[0.48px] text-[#0D0E0D]">
+                      Guest Profile
+                    </p>
+                    <p className=" font-lato text-xs font-medium leading-[1.4] text-[#6E6E6E]">
+                      <span className="text-[#CCD97E]">
+                        Reservation
+                      </span>
+                      / Guest Profile
+                    </p>
+                  </div>
                 </div>
               ) : currentPath.includes("invoice") ? (
-                <div className="flex flex-col">
-                  <h1>Invoice</h1>
-                </div>
+                <h1>Invoice</h1>
               ) : currentPath.includes("expense") ? (
-                <div className="flex flex-col">
-                  <h1>Expenses</h1>
-                </div>
+                <h1>Expenses</h1>
               ) : (
                 <h1>{dynamicTitle}</h1>
               )}
-            </p>
+            </div>
             <div className="flex-1 gap-4 flex justify-end">
               {currentPath === "/" && (
                 <div className="flex-1 hidden gap-4 lg:flex justify-end">

@@ -1,4 +1,5 @@
 import {
+  FaChevronLeft,
   FaEllipsisH,
   FaRegPaperPlane,
   FaRegSmile,
@@ -26,18 +27,29 @@ import ListLink from "./ListLink";
 
 export const Messenger = () => {
   const [messages, sendMessage] = useState(defaultMessages);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(window.screen.width < 768 ? 1 : 2);
+  const [ready, setReady] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [conversation, setConversation] = useState({});
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
   const formRef = useRef(null);
 
   const handleOpen = () => {
-    setOpen(true);
+    setOpen(2);
+    setExpanded(false);
   };
+
   const handleClose = () => {
-    setOpen(false);
+    setOpen(0);
+    setExpanded(window.screen.width < 768);
   };
+
+  const showConversations = () => {
+    setExpanded(false);
+    setOpen(0);
+  };
+
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -59,7 +71,13 @@ export const Messenger = () => {
   };
 
   const openConversation = (e) => {
+    if (!ready) {
+      showConversations();
+      setReady(true);
+      return;
+    }
     setConversation(e);
+    setExpanded(window.screen.width < 768);
     sendMessage([
       ...defaultMessages,
       buildMessage(e.text, defaultMessages, e.sender),
@@ -68,8 +86,12 @@ export const Messenger = () => {
 
   return (
     <>
-      <div className="grid grid-cols-8 gap-2 bg-white p-4">
-        <div className="col-span-2">
+      <div className="grid grid-cols-8 gap-2 p-4 bg-white">
+        <div
+          className={`${
+            open < 1 || expanded ? "" : "hidden md:block"
+          } col-span-8 md:col-span-2 ${expanded ? "hidden" : ""}`}
+        >
           <div className="max-h-[70vh] overflow-y-auto hide-scrollbar">
             <Conversations
               open={openConversation}
@@ -77,13 +99,28 @@ export const Messenger = () => {
             />
           </div>
         </div>
-        <div className={`${open ? "col-span-4" : "col-span-6"}`}>
+        <div
+          className={`${
+            expanded
+              ? "col-span-8"
+              : open > 0
+              ? "col-span-4"
+              : "col-span-6"
+          } ${!expanded ? "hidden" : ""} md:block`}
+        >
           <div className="w-full p-4 bg-gray-100 rounded-xl">
             <div className="flex items-center justify-between mb-5 chat-header">
               <div className="flex justify-start gap-2 items-between">
                 <button
+                  type="submit"
+                  className="flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer md:hidden"
+                  onClick={showConversations}
+                >
+                  <FaChevronLeft size={15} />
+                </button>
+                <button
                   onClick={handleOpen}
-                  className="overflow-hidden rounded-full w-9 h-9 cursor-pointer"
+                  className="overflow-hidden rounded-full cursor-pointer w-9 h-9"
                 >
                   <img src={conversation.avatar} />
                 </button>
@@ -162,13 +199,13 @@ export const Messenger = () => {
           </div>
         </div>
         <div
-          className={`col-span-2 flex flex-col ${
-            !open ? "hidden" : ""
+          className={`col-span-8 md:col-span-2 flex flex-col ${
+            open < 2 || expanded ? "hidden" : ""
           }`}
         >
           <div className="max-h-[70vh] overflow-y-auto hide-scrollbar">
-            <div className="flex flex-col px-2 items-start gap-6 w-full">
-              <div className="flex justify-between items-center w-full">
+            <div className="flex flex-col items-start w-full gap-6 px-2">
+              <div className="flex items-center justify-between w-full">
                 <h1 className="text-customBlack text-[16px] font-medium leading-[20px]">
                   Profile
                 </h1>
@@ -186,9 +223,9 @@ export const Messenger = () => {
                 <img
                   src={conversation.avatar}
                   alt="profile"
-                  className="w-14 h-14 rounded-full overflow-hidden"
+                  className="overflow-hidden rounded-full w-14 h-14"
                 />
-                <div className="flex flex-col items-center gap-1 self-stretch">
+                <div className="flex flex-col items-center self-stretch gap-1">
                   <div className="flex gap-1">
                     <div className="flex items-center gap-1">
                       <p className="text-[#0D0E0D] font-lato text-[18px] font-medium leading-[21.6px]">
@@ -202,8 +239,8 @@ export const Messenger = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col items-start gap-3 self-stretch">
-                <div className="flex gap-1 items-center">
+              <div className="flex flex-col items-start self-stretch gap-3">
+                <div className="flex items-center gap-1">
                   <Info />
                   <p className="text-[#A3A3A3] text-[11px] font-semibold leading-[15.4px] tracking-[0.44px] uppercase">
                     About
@@ -214,9 +251,9 @@ export const Messenger = () => {
                   and values exceptional customer service.
                 </p>
               </div>
-              <div className="flex flex-col items-start gap-3 self-stretch">
+              <div className="flex flex-col items-start self-stretch gap-3">
                 <div className="flex justify-between w-full">
-                  <div className="flex gap-1 items-center w-full">
+                  <div className="flex items-center w-full gap-1">
                     <ImageScreen />
                     <p className="text-[#A3A3A3] text-[11px] font-semibold leading-[15.4px] tracking-[0.44px] uppercase">
                       Media (17)
@@ -226,18 +263,18 @@ export const Messenger = () => {
                     Show All
                   </span>
                 </div>
-                <div className="grid grid-cols-3 gap-1 w-full items-center justify-center">
-                  <div className="h-20 w-20 rounded-md bg-yellow-300"></div>
-                  <div className="h-20 w-20 rounded-md bg-red-300"></div>
-                  <div className="h-20 w-20 rounded-md bg-pink-400"></div>
-                  <div className="h-20 w-20 rounded-md bg-blue-400"></div>
-                  <div className="h-20 w-20 rounded-md bg-slate-400"></div>
-                  <div className="h-20 w-20 rounded-md bg-purple-600"></div>
+                <div className="grid items-center justify-center w-full grid-cols-3 gap-1">
+                  <div className="w-20 h-20 bg-yellow-300 rounded-md"></div>
+                  <div className="w-20 h-20 bg-red-300 rounded-md"></div>
+                  <div className="w-20 h-20 bg-pink-400 rounded-md"></div>
+                  <div className="w-20 h-20 bg-blue-400 rounded-md"></div>
+                  <div className="w-20 h-20 rounded-md bg-slate-400"></div>
+                  <div className="w-20 h-20 bg-purple-600 rounded-md"></div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-start gap-3 self-stretch">
-                <div className="flex justify-between items-center w-full">
+              <div className="flex flex-col items-start self-stretch gap-3">
+                <div className="flex items-center justify-between w-full">
                   <div className="flex gap-1">
                     <FileText />
                     <p className="text-[#A3A3A3] text-[11px] font-semibold leading-[15.4px] tracking-[0.44px] uppercase">
@@ -248,7 +285,7 @@ export const Messenger = () => {
                     Show All
                   </span>
                 </div>
-                <div className="flex flex-col items-start gap-4 self-stretch w-full">
+                <div className="flex flex-col items-start self-stretch w-full gap-4">
                   <ListDocs
                     text="Invoice-240528.pdf"
                     docSize="1.45 mb"
@@ -263,8 +300,8 @@ export const Messenger = () => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col items-start gap-3 self-stretch">
-                <div className="flex justify-between w-full items-center">
+              <div className="flex flex-col items-start self-stretch gap-3">
+                <div className="flex items-center justify-between w-full">
                   <div className="flex gap-1">
                     <SmallLink />
                     <p className="text-[#A3A3A3] text-[11px] font-semibold leading-[15.4px] tracking-[0.44px] uppercase">
@@ -275,7 +312,7 @@ export const Messenger = () => {
                     Show All
                   </span>
                 </div>
-                <div className="flex flex-col items-start gap-4 self-stretch">
+                <div className="flex flex-col items-start self-stretch gap-4">
                   <ListLink
                     text="Summer Staycation PROMO!"
                     url="www.instagram.com"

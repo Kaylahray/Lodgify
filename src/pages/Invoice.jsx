@@ -16,8 +16,12 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+
+import SecondLayoutCard from "../components/SecondLayoutCard";
+import { SearchTwo, Faders } from "../assets/assets";
 import CustomPagination from "../components/CustomPagination";
 import { mockInvoiceData } from "../features/invoice/mockInvoiceData";
+import CaretSelect from "../components/CaretSelect";
 
 const columns = [
   {
@@ -51,10 +55,17 @@ const columns = [
       <span
         className={`${
           row.original.status === "Paid"
-            ? "text-green-500 bg-green-50"
-            : "text-red-500 bg-red-50"
+            ? "flex items-center gap-1 p-[1px] w-fit px-[6px] py-[1px] rounded-md bg-[#E7F68E]"
+            : "flex items-center gap-1 p-[1px] w-fit px-[6px] py-[1px] rounded-md bg-[#FEE]"
         } px-2 py-1 rounded-full text-sm font-medium`}
       >
+        <div
+          className={`w-[9px] h-[9px] rounded-sm ${
+            row.original.status === "Paid"
+              ? "bg-[#CCD97E]"
+              : " bg-[#FD4242]"
+          }`}
+        ></div>
         {row.original.status}
       </span>
     ),
@@ -99,31 +110,36 @@ const Invoice = () => {
 
   return (
     <>
-      <LayoutCard
-        title="Reservation List"
+      <SecondLayoutCard
+        reverse={true}
+        extra2={
+          <div className="p-2 rounded-md bg-[#F8F8F8)]">
+            <Faders className="bg-customYellow" />
+          </div>
+        }
+        search={
+          <SearchBar
+            placeholder="Search guest, status, etc"
+            value={filtering}
+            onChange={(e) => setFiltering(e.target.value)}
+          />
+        }
         component={
-          <div className="flex lg:flex-row gap-2 items-start flex-col">
-            <SearchBar
-              placeholder="Search guest, status, etc"
-              value={filtering}
-              onChange={(e) => setFiltering(e.target.value)}
+          <>
+            <DoubleCaretSelect
+              btnText="5 June - 16th June"
+              calender={true}
+              bg="customYellow"
             />
-
             <DoubleCaretSelect
               btnText="All Status"
               funnel={true}
               bg="customG"
             />
-            <DoubleCaretSelect
-              btnText="19 - 24 June, 2028"
-              calender={true}
-              bg="customG"
-            />
-            <Button btnText="Add Booking" />
-          </div>
+          </>
         }
       >
-        <div className="min-h-[80vh] flex flex-col justify-between ">
+        <div className="min-h-[80vh] flex flex-col justify-between">
           <table className="w-full ">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -180,7 +196,7 @@ const Invoice = () => {
             </TableBody>
           </table>
         </div>
-      </LayoutCard>
+      </SecondLayoutCard>
       <CustomPagination table={table} />
     </>
   );

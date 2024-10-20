@@ -4,13 +4,13 @@ import { checkAuth, signInWithEmail } from "../services/apiAuth";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
   const [errors, setErrors] = useState({
     email: null,
     message: null,
     password: null,
   });
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("admin");
   const [session, setSession] = useState(null);
   const navigate = useNavigate();
 
@@ -94,7 +94,7 @@ const Login = () => {
                       value={email}
                       required
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                   {errors.email ? (
@@ -120,7 +120,7 @@ const Login = () => {
                       onChange={handlePasswordChange} // Clear password error on change
                       required
                       autoComplete="current-password"
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                   {errors.password ? (
@@ -150,7 +150,7 @@ const Login = () => {
                 <div>
                   <button
                     type="submit"
-                    className="flex w-full justify-center rounded-md bg-customYellow px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="flex w-full justify-center rounded-md bg-customYellow px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-customBlue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
                   >
                     Sign in
                   </button>

@@ -55,8 +55,13 @@ import FileText from "./FileText.svg";
 import ImageScreen from "./ImageScreen.svg";
 import Info from "./Info.svg";
 import Link from "./Link.svg";
+import Wallet from "./Wallet.svg";
+import Request from "./Request.svg";
+import Transfer from "./Transfer.svg";
 import SmallLink from "./SmallLink.svg";
 import SearchTwo from "./SearchTwo.svg";
+import ArrowLeft from "./ArrowLeft.svg";
+
 import EnvelopeOpen from "./EnvelopeOpen.svg";
 
 export {
@@ -64,8 +69,12 @@ export {
   CaretRight,
   SmallLink,
   Info,
+  Transfer,
+  Request,
+  Wallet,
   ImageScreen,
   HouseKeepingIconn,
+  ArrowLeft,
   Link,
   FilePdf,
   FileText,
