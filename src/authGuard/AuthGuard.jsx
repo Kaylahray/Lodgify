@@ -1,22 +1,31 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {useNavigate } from "react-router-dom";
 import { checkAuth } from "../services/apiAuth"; // Your authentication check service
 
 const AuthGuard = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // Track auth status
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const subscription = checkAuth((session) => {
-      if (!session) {
-        navigate("/login"); // Redirect to login if not authenticated
+      if (session) {
+        setIsAuthenticated(true); // User is authenticated
+      } else {
+        setIsAuthenticated(false); // Redirect to login
+        navigate("/login"); // Optional: Save the route they tried to access
       }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  return <>{children}</>; // Render the children (protected routes)
+  if (isAuthenticated === null) {
+  // Do not render anything during the loading state
+  return null;
+}
+
+  return <>{children}</>; // Render children if authenticated
 };
 
 export default AuthGuard;
+
